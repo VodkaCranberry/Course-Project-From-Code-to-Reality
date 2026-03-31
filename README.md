@@ -9,25 +9,29 @@
 
 2.1 3D建模图片
 
-![img](file:///D:\OneDrive\Documents\Tencent Files\1838341059\nt_qq\nt_data\Pic\2026-03\Ori\b649ed023b1cc256f4a70cd242eaee5b.png)
+![649ed023b1cc256f4a70cd242eaee5](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\b649ed023b1cc256f4a70cd242eaee5b.png)
 
-![img](file:///D:\OneDrive\Documents\Tencent Files\1838341059\nt_qq\nt_data\Pic\2026-03\Ori\347f9bc6666d8b70adfbbd188562b459.png)
+![47f9bc6666d8b70adfbbd188562b45](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\347f9bc6666d8b70adfbbd188562b459.png)
 
-![img](file:///D:\OneDrive\Documents\Tencent Files\1838341059\nt_qq\nt_data\Pic\2026-03\Ori\97cb2a68492528bf8ff227176be7b07c.png)
+![7cb2a68492528bf8ff227176be7b07](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\97cb2a68492528bf8ff227176be7b07c.png)
 
-![img](file:///D:\OneDrive\Documents\Tencent Files\1838341059\nt_qq\nt_data\Pic\2026-03\Ori\b78e6c1ade8eae2cbd14a2c5f00b5553.png)
+![78e6c1ade8eae2cbd14a2c5f00b555](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\b78e6c1ade8eae2cbd14a2c5f00b5553.png)
 
-![img](file:///D:\OneDrive\Documents\Tencent Files\1838341059\nt_qq\nt_data\Pic\2026-03\Thumb\c971893be91ef17d07ad4407d3bd633c_720.jpg)
 
-![img](file:///D:\OneDrive\Documents\Tencent Files\1838341059\nt_qq\nt_data\Pic\2026-03\Thumb\c2ec0c542de4bb72c5fac679578e46a7_720.jpg)
+
+![971893be91ef17d07ad4407d3bd633](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\c971893be91ef17d07ad4407d3bd633c.jpg)
+
+![2ec0c542de4bb72c5fac679578e46a](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\c2ec0c542de4bb72c5fac679578e46a7.jpg)
 
 
 
 2.2 焊接练习作品
 
-![img](file:///D:\OneDrive\Documents\Tencent Files\1838341059\nt_qq\nt_data\Pic\2026-03\Thumb\b3467b57bf36d48a89ec00746d58fb2e_720.jpg)
+![3467b57bf36d48a89ec00746d58fb2](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\b3467b57bf36d48a89ec00746d58fb2e.jpg)
 
-![img](file:///D:\OneDrive\Documents\Tencent Files\1838341059\nt_qq\nt_data\Pic\2026-03\Thumb\c0fc846ed17ec063d2374634b19bf0c9_720.jpg)
+![0fc846ed17ec063d2374634b19bf0c](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\c0fc846ed17ec063d2374634b19bf0c9.jpg)
+
+
 
 #### 三.课程总结和思考
 

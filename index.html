@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>从代码到实物：我的创客练习日志</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            color: #333;
+            background-color: #fff;
+        }
+
+        /* 侧边导航栏 */
+        nav {
+            width: 260px;
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        nav h2 {
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #34495e;
+        }
+
+        nav a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: block;
+            padding: 12px 0;
+            border-bottom: 1px solid #34495e;
+            transition: color 0.3s;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-left: 260px;
+            padding: 40px 60px;
+            max-width: 1000px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.2em;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            margin-top: 50px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #555;
+        }
+
+        /* 代码块样式 */
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        }
+
+        /* 图片与图注样式 */
+        figure {
+            margin: 25px 0;
+            text-align: center;
+            background: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #eaeaea;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        figcaption {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        /* 布局网格 */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h2>项目目录</h2>
+        <a href="#task1">任务1：3D建模与3D打印</a>
+        <a href="#task2">任务2：电子焊接练习</a>
+        <a href="#task3">任务3：嵌入式开发基础</a>
+        <a href="#task3-1"> - HelloWorld</a>
+        <a href="#task3-2"> - 数字输出(闪灯)</a>
+        <a href="#task3-3"> - 数字输入(按键)</a>
+        <a href="#task3-4"> - 模拟输出(呼吸灯)</a>
+        <a href="#task3-5"> - 模拟输入(光敏)</a>
+        <a href="#task4">任务4：物联网与舵机</a>
+        <a href="#task4-1"> - WiFi Web Server</a>
+        <a href="#task4-2"> - 舵机与WiFi控制</a>
+    </nav>
+
+    <main>
+        <h1>从代码到实物：我的创客练习日志</h1>
+        <p>本日志记录了从机械结构设计、电子元器件焊接，再到嵌入式软件开发与物联网控制的完整创客实践过程。</p>
+
+        <section id="task1">
+            <h2>任务1：从3D建模到3D打印 (致敬交大130周年校庆)</h2>
+            <p>在这个任务中，我使用 <strong>SOLIDWORKS</strong> 软件进行了西南交通大学校门的3D建模设计，随后使用 <strong>拓竹 A1 mini</strong>
+                3D打印机将其转化为实物模型。以此礼赞西南交大130年校庆。</p>
+
+            <div class="image-grid">
+                <figure>
+                    <img src="images/pic1.png" alt="交大校门正面3D模型">
+                    <figcaption>图1：SOLIDWORKS 中的交大校门正面3D模型，带有“西南交通大学”字样</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/pic2.png" alt="交大校门背面模型">
+                    <figcaption>图2：校门模型的背面视角与内部拱门结构</figcaption>
+                </figure>
+            </div>
+            <div class="image-grid">
+                <figure>
+                    <img src="images/pic3.png" alt="底部视角结构">
+                    <figcaption>图3：校门底部透视与结构细节设计</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/pic4.png" alt="模型整体预览">
+                    <figcaption>图4：3D模型整体渲染预览</figcaption>
+                </figure>
+            </div>
+            <div class="image-grid">
+                <figure>
+                    <img src="images/pic5.jpg" alt="3D打印成品实物">
+                    <figcaption>图5：拓竹 A1 mini 打印完成的西南交大校门实物</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/pic6.jpg" alt="实物打卡">
+                    <figcaption>图6：将3D打印模型与真实的交大校门合影打卡</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="task2">
+            <h2>任务2：电子焊接练习</h2>
+            <p>本次任务完成了一块LED闪灯电路板的焊接作业。通过练习，我掌握了直插式元器件的焊接技巧，提升了焊接水平，为后续的嵌入式硬件开发打下了基础。</p>
+            <div class="image-grid">
+                <figure>
+                    <img src="images/pic7.jpg" alt="闪灯PCB板正面">
+                    <figcaption>图7：PCB正面实拍，包含IC底座、LED指示灯、电阻与电容</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/pic8.jpg" alt="PCB板背面焊点">
+                    <figcaption>图8：PCB背面实拍，焊点饱满均匀，无虚焊与连锡现象</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="task3">
+            <h2>任务3：嵌入式练习 (ESP32)</h2>
+            <p>使用 ESP32 系列开发板进行基础的 GPIO 控制与串口通信实验。</p>
+
+            <h3 id="task3-1">1. HelloWorld (串口通信)</h3>
+            <p>初始化串口通信，使开发板向电脑终端持续输出 "hello world"。</p>
+            <pre><code>void setup() {
+  Serial.begin(9600); // 设置波特率为9600
+}
+
+void loop() {
+  Serial.println("hello world");
+  delay(500); // 延时500毫秒
+}</code></pre>
+            <figure>
+                <img src="images/pic9.png" alt="串口输出Hello World">
+                <figcaption>图9：Arduino IDE 串口监视器成功接收到开发板发送的 hello world 数据</figcaption>
+            </figure>
+
+            <h3 id="task3-2">2. 数字输出 (控制LED闪烁)</h3>
+            <p>使用 <code>digitalWrite()</code> 函数控制特定引脚输出高低电平，驱动面包板上的外接LED灯闪烁。</p>
+            <pre><code>#define LEDPIN 40
+
+void setup() {
+  pinMode(LEDPIN, OUTPUT); // 设置引脚为输出模式
+}
+
+void loop() {
+  digitalWrite(LEDPIN, HIGH); // 点亮LED
+  delay(100);
+  digitalWrite(LEDPIN, LOW);  // 熄灭LED
+  delay(100);
+}</code></pre>
+            <figure>
+                <img src="images/pic10.png" alt="LED闪烁实物接线">
+                <figcaption>图10：ESP32 连接面包板，通过数字引脚驱动LED灯闪烁的实物接线图</figcaption>
+            </figure>
+
+            <h3 id="task3-3">3. 数字输入 (读取按键状态)</h3>
+            <p>使用自恢复按键开关与下拉电阻构建电路，通过 <code>digitalRead()</code> 读取按键状态并在串口绘图器中观察电平变化。</p>
+            <pre><code>#define BUTTONPIN 40
+int in;
+
+void setup() {
+  pinMode(BUTTONPIN, INPUT); // 设置引脚为输入模式
+  Serial.begin(9600);
+}
+
+void loop() {
+  in = digitalRead(BUTTONPIN); // 读取按键电平
+  Serial.println(in); // 输出到串口
+  delay(100);
+}</code></pre>
+            <div class="image-grid">
+                <figure>
+                    <img src="images/pic11.png" alt="按键电路接线图">
+                    <figcaption>图11：面包板上的按键输入电路实物连接图</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/pic12.png" alt="串口监视器读取状态">
+                    <figcaption>图12：串口监视器实时打印按键的高低电平状态 (0和1)</figcaption>
+                </figure>
+            </div>
+            <figure>
+                <img src="images/pic13.png" alt="串口绘图器波形图">
+                <figcaption>图13：Arduino IDE 串口绘图器直观展示按键按下与松开时的波形跳变</figcaption>
+            </figure>
+
+            <h3 id="task3-4">4. 模拟输出 (PWM 呼吸灯)</h3>
+            <p>使用 <code>analogWrite()</code> 函数输出不同占空比的 PWM 信号，实现 LED 亮度的渐变效果（呼吸灯）。</p>
+            <pre><code>#define APIN 40
+
+void setup() {
+  analogWriteResolution(APIN, 10); // 设置10位分辨率
+}
+
+void loop() {
+  analogWrite(APIN, 1023); delay(100);
+  analogWrite(APIN, 768);  delay(100);
+  analogWrite(APIN, 512);  delay(100);
+  analogWrite(APIN, 256);  delay(100);
+  analogWrite(APIN, 128);  delay(100);
+  analogWrite(APIN, 64);   delay(100);
+}</code></pre>
+            <figure>
+                <img src="images/pic14.png" alt="呼吸灯实物接线">
+                <figcaption>图14：PWM 模拟输出驱动 LED 呼吸灯实物接线图</figcaption>
+            </figure>
+
+            <h3 id="task3-5">5. 模拟输入 (光敏电阻读取环境光)</h3>
+            <p>通过光敏电阻组成分压电路，使用 <code>analogRead()</code> 读取环境光强度对应的模拟电压值。</p>
+            <figure>
+                <img src="images/pic15.png" alt="光敏电阻接线实物">
+                <figcaption>图15：ESP32 连接光敏电阻，实时采集环境光强度模拟信号</figcaption>
+            </figure>
+        </section>
+
+        <section id="task4">
+            <h2>任务4：物联网与高级控制</h2>
+
+            <h3 id="task4-1">6. WiFi Web Server (网页控制LED)</h3>
+            <p>利用 ESP32 强大的无线功能接入局域网，建立一个简单的 HTTP Web 服务器，通过手机或电脑浏览器直接控制硬件板载的 LED 灯。</p>
+            <div class="image-grid">
+                <figure>
+                    <img src="images/pic16.png" alt="连接WiFi成功">
+                    <figcaption>图16：ESP32 成功连接局域网 WiFi，串口监视器打印出分配的 IP 地址 (192.168.43.216)</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/pic17.png" alt="浏览器Web Server界面">
+                    <figcaption>图17：使用浏览器访问开发板IP地址，点击超链接即可无线控制板载 LED 灯的亮灭</figcaption>
+                </figure>
+            </div>
+
+            <h3 id="task4-2">7. 扩展：舵机控制与 WiFi 远程舵机</h3>
+            <p>结合 <code>ESP32Servo</code> 库生成精准的 50Hz PWM 信号来驱动舵机旋转。进一步，将 Web Server 的概念扩展至舵机控制，实现了网页端发送 GET 请求（如
+                <code>/R</code> 和 <code>/L</code>）来控制物理舵机向左或向右转动，完成了从代码到机械动作的物联网闭环。
+            </p>
+            <pre><code>// 截取核心的 Web Server 舵机控制逻辑
+if (currentLine.endsWith("GET /R")) {
+  int duty0 = 4096 * 0.5 / 20;
+  ledcWrite(LED_PIN, duty0); // 舵机归零
+}
+if (currentLine.endsWith("GET /L")) {
+  int duty180 = 4096 * 2.5 / 20;
+  ledcWrite(LED_PIN, duty180); // 舵机旋转180度
+}</code></pre>
+        </section>
+
+    </main>
+</body>
+
+</html>

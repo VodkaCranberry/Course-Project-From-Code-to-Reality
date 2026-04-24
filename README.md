@@ -1,75 +1,18 @@
 # Course Project-From Code to Reality
 
-#### 一.个人介绍
-黄新雄，计算机科学与技术专业，来自西南交通大学
+# 《从代码到实物》课程项目
 
+本项目用于记录和展示在《从代码到实物》课程中的学习过程、DIY 实践以及最终的创新成果。
 
+## 一、个人介绍
 
-#### 二.课程过程以及DIY成果的文本、图片和视频
+* **姓名：** 黄新雄
+* **专业：** 计算机科学与技术
+* **学校：** 西南交通大学
 
-2.1 3D建模图片
+---
 
-![3D建模展示](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\b649ed023b1cc256f4a70cd242eaee5b.png)
+## 二、课程介绍：《从代码到实物》
 
-![3D建模展示](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\347f9bc6666d8b70adfbbd188562b459.png)
+本课程是一门将软件逻辑与硬件实践结合的跨界课程，旨在通过 3D 建模、电路设计、电子焊接及嵌入式开发，将虚拟的代码转化为可触摸、可运行的实物作品。
 
-![3D建模展示](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\b78e6c1ade8eae2cbd14a2c5f00b5553.png)
-
-![3D建模展示](img/97cb2a68492528bf8ff227176be7b07c.png)
-
-![3D建模展示](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\c971893be91ef17d07ad4407d3bd633c.jpg)
-
-![3D建模展示](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\c2ec0c542de4bb72c5fac679578e46a7.jpg)
-
-
-
-2.2 焊接练习作品
-
-![3D建模展示](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\b3467b57bf36d48a89ec00746d58fb2e.jpg)
-
-![3D建模展示](D:\CourseProjectFromCodetoReality\course-project-from-code-to-reality\img\c0fc846ed17ec063d2374634b19bf0c9.jpg)
-
-#### 三.课程总结和思考
-
-
-
-#### 四.中期创客项目的DIY成果文本、图片和视频，团队介绍
-
-
-
-#### 五.期末创新项目的DIY成果文本、图片和视频，团队介绍
-
-
-
-#### 软件架构
-软件架构说明
-
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)

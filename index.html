@@ -4,145 +4,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>从代码到实物：我的创客练习日志</title>
+    <title>从代码到实物：创客练习日志</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/papercolor-light.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
     <style>
+        /* --- 核心视觉定义 (复古日志风) --- */
         :root {
-            --primary-color: #2c3e50;
-            --accent-color: #3498db;
-            --bg-color: #f8f9fa;
+            var-bg-desk: #524032;
+            --paper-main: #f4ecd8;
+            /* 泛黄的纸张主色 */
+            --paper-dark: #e3d5b8;
+            /* 纸张暗部/侧边栏色 */
+            --ink-main: #2b231f;
+            /* 褪色的黑墨水色 */
+            --ink-light: #5c4d42;
+            /* 浅墨色/边框色 */
+            --accent-red: #8b1e1e;
+            /* 批注用的暗红色/印章色 */
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 自定义滚动条 (复古样式) */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--paper-dark);
+            border-left: 1px solid var(--ink-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--ink-light);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--ink-main);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
+            background-color: var(--bg-desk);
+            /* 提亮后的渐变背景 */
+            background-image: radial-gradient(circle at center, #6b5443 0%, #3e3025 100%);
             margin: 0;
-            padding: 0;
+            font-family: 'Playfair Display', "Times New Roman", Times, serif;
+            color: var(--ink-main);
             display: flex;
-            color: #333;
-            background-color: #fff;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* 侧边导航栏 */
+        /* --- 侧边栏 (目录索引) --- */
         nav {
-            width: 260px;
-            background: var(--primary-color);
-            color: white;
-            padding: 20px;
-            height: 100vh;
-            position: fixed;
+            width: var(--sidebar-width);
+            background-color: var(--paper-dark);
+            box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.05), 5px 0 15px rgba(0, 0, 0, 0.3);
+            border-right: 2px solid var(--ink-light);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
             overflow-y: auto;
-            box-sizing: border-box;
+            position: fixed;
+            z-index: 100;
         }
 
         nav h2 {
+            font-family: 'Special Elite', cursive;
+            color: var(--ink-main);
+            font-size: 22px;
             margin-top: 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #34495e;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px double var(--ink-light);
+            padding-bottom: 15px;
+            text-align: center;
         }
 
         nav a {
-            color: #bdc3c7;
+            color: var(--ink-main);
             text-decoration: none;
-            display: block;
-            padding: 12px 0;
-            border-bottom: 1px solid #34495e;
-            transition: color 0.3s;
+            padding: 12px 10px;
+            border-bottom: 1px dashed rgba(92, 77, 66, 0.4);
             font-size: 15px;
+            display: block;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            /* 绝对统一侧边栏字体粗细为常规体 */
+            font-weight: 400 !important;
         }
 
         nav a:hover {
-            color: white;
-            padding-left: 5px;
+            color: var(--accent-red);
+            padding-left: 15px;
+            background: rgba(139, 30, 30, 0.05);
+            font-weight: 700 !important;
         }
 
-        /* 主内容区 */
+        /* 折叠菜单组 */
+        .nav-group {
+            margin-bottom: 0;
+        }
+
+        .nav-header {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-header.active {
+            color: var(--accent-red);
+            border-bottom-style: solid;
+            font-weight: 700 !important;
+        }
+
+        .arrow {
+            font-size: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-header.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        .nav-sub {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-left: 2px solid var(--accent-red);
+            margin-left: 5px;
+        }
+
+        .nav-sub a {
+            padding-left: 15px;
+            font-size: 13px;
+            border-bottom: 1px dotted rgba(92, 77, 66, 0.3);
+            color: var(--ink-light);
+        }
+
+        /* --- 主内容区 (纸张) --- */
         main {
-            margin-left: 260px;
-            padding: 40px 60px;
-            max-width: 1000px;
-            box-sizing: border-box;
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 50px 80px;
+            scroll-behavior: smooth;
         }
 
+        section {
+            background-color: var(--paper-main);
+            background-image:
+                radial-gradient(circle at center, transparent 60%, rgba(139, 69, 19, 0.08) 100%),
+                url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"/></svg>');
+            border-radius: 2px;
+            border: 1px solid #d4c5b0;
+            padding: 50px 60px;
+            margin-bottom: 60px;
+            box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        /* 英文复古大标题 */
         h1 {
-            color: var(--primary-color);
-            font-size: 2.2em;
-            border-bottom: 3px solid var(--accent-color);
-            padding-bottom: 10px;
-            margin-bottom: 40px;
+            font-family: 'Special Elite', cursive;
+            color: var(--ink-main);
+            font-size: 3.2em;
+            margin-bottom: 5px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        /* 中文主标题 */
+        .cn-title {
+            text-align: center;
+            font-size: 1.6em;
+            font-weight: bold;
+            color: var(--ink-main);
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--ink-main);
+            padding-bottom: 20px;
         }
 
         h2 {
-            color: var(--accent-color);
-            margin-top: 50px;
+            font-family: 'Special Elite', cursive;
+            color: var(--ink-main);
+            font-size: 1.8em;
+            margin-top: 20px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 3px double var(--ink-light);
         }
 
         h3 {
-            color: #2980b9;
-            margin-top: 30px;
+            font-family: 'Special Elite', cursive;
+            color: var(--ink-light);
+            font-size: 1.2em;
+            margin-top: 35px;
         }
 
-        p {
-            margin-bottom: 16px;
-            color: #555;
-        }
-
+        p,
         ul {
-            color: #555;
-            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.9;
+            color: var(--ink-main);
         }
 
         li {
             margin-bottom: 8px;
         }
 
-        /* 代码块样式 */
-        pre {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        code {
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-        }
-
-        /* 图片与图注样式 */
-        figure {
+        /* --- 提示框 --- */
+        .notice-box {
+            background-color: #eaddca;
+            border: 1px dashed var(--ink-light);
+            padding: 20px;
             margin: 25px 0;
+            font-family: 'Courier Prime', monospace;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .highlight-text {
+            font-family: 'Special Elite', cursive;
+            font-weight: bold;
+            color: var(--accent-red);
+        }
+
+        /* --- 图片与网格 (去除滤镜，保留拍立得边框) --- */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        figure {
+            margin: 0;
+            background: #fffdf9;
+            padding: 12px 12px 40px 12px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
             text-align: center;
-            background: var(--bg-color);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #eaeaea;
+            position: relative;
+            transform: rotate(-1deg);
+            transition: transform 0.3s ease;
+        }
+
+        figure:nth-child(even) {
+            transform: rotate(1.5deg);
+        }
+
+        figure:hover {
+            transform: scale(1.02) rotate(0deg);
+            z-index: 10;
         }
 
         img {
             max-width: 100%;
             height: auto;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #ddd;
         }
 
         figcaption {
-            margin-top: 12px;
-            font-size: 14px;
-            color: #666;
-            font-weight: bold;
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            width: 100%;
+            font-size: 13px;
+            color: var(--ink-main);
+            font-family: 'Courier Prime', cursive;
         }
 
-        /* 布局网格 */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        /* --- 代码块 --- */
+        pre {
+            margin: 25px 0;
+            background-color: #fcf9f2 !important;
+            border: 1px solid #d4c5b0;
+            border-left: 5px solid var(--ink-light);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.02);
+            border-radius: 2px;
+        }
+
+        pre code {
+            font-family: 'Courier Prime', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 20px !important;
+            color: #333;
         }
     </style>
 </head>
@@ -150,277 +312,405 @@
 <body>
 
     <nav>
-        <h2>项目目录</h2>
-        <a href="#task1">任务1：3D建模与3D打印</a>
-        <a href="#task2">任务2：电子焊接练习</a>
-        <a href="#task3">任务3：嵌入式开发基础</a>
-        <a href="#task3-1"> - HelloWorld</a>
-        <a href="#task3-2"> - 数字输出(闪灯)</a>
-        <a href="#task3-3"> - 数字输入(按键)</a>
-        <a href="#task3-4"> - 模拟输出(呼吸灯)</a>
-        <a href="#task3-5"> - 模拟输入(光敏)</a>
-        <a href="#task4">任务4：物联网与舵机</a>
-        <a href="#task4-1"> - WiFi Web Server</a>
-        <a href="#task4-2"> - 舵机与WiFi控制</a>
-        <a href="#task5">任务5：EDA电路板设计实践</a>
-        <a href="#task5-1"> - 项目一：校庆专属LED徽章</a>
-        <a href="#task5-2"> - 项目二：锂电池充电管理电路</a>
-        <a href="#task6">任务6：激光切割实践</a>
-        <a href="#task6-1"> - 项目：校庆元素定制书签</a>
+        <h2>PROJECT LOG</h2>
+        <a href="#sec1">01. 个人简介</a>
+        <a href="#sec2">02. 什么是创客</a>
+        <a href="#sec3">03. Git 协作记录</a>
+
+        <div class="nav-group">
+            <a class="nav-header" onclick="toggleSubMenu(this)">04. 3D建模与打印 <span class="arrow">▼</span></a>
+            <div class="nav-sub">
+                <a href="#sec4-1">- 校庆校门模型</a>
+            </div>
+        </div>
+
+        <a href="#sec5">05. 电子焊接实验</a>
+
+        <div class="nav-group">
+            <a class="nav-header" onclick="toggleSubMenu(this)">06. 嵌入式计算 <span class="arrow">▼</span></a>
+            <div class="nav-sub">
+                <a href="#sec6-1">- HelloWorld</a>
+                <a href="#sec6-2">- 数字输出(闪灯)</a>
+                <a href="#sec6-3">- 数字输入(按键)</a>
+                <a href="#sec6-4">- 模拟输出(呼吸灯)</a>
+                <a href="#sec6-5">- 模拟输入(光敏)</a>
+                <a href="#sec6-6">- WiFi Web Server</a>
+                <a href="#sec6-7">- 舵机与WiFi控制</a>
+            </div>
+        </div>
+
+        <a href="#sec7">07. 中期创客项目</a>
+
+        <div class="nav-group">
+            <a class="nav-header" onclick="toggleSubMenu(this)">08. PCB设计蓝图 <span class="arrow">▼</span></a>
+            <div class="nav-sub">
+                <a href="#sec8-1">- 校庆LED徽章</a>
+                <a href="#sec8-2">- 锂电池充电模块</a>
+            </div>
+        </div>
+
+        <a href="#sec9">09. 设计思维</a>
+        <a href="#sec10">10. 期末创新项目</a>
+
+        <div class="nav-group">
+            <a class="nav-header" onclick="toggleSubMenu(this)">附加. 激光切割 <span class="arrow">▼</span></a>
+            <div class="nav-sub">
+                <a href="#sec11-1">- 校庆元素定制书签</a>
+            </div>
+        </div>
     </nav>
 
     <main>
-        <h1>从代码到实物：我的创客练习日志</h1>
-        <p>本日志记录了从机械结构设计、减材制造、电子元器件焊接，再到嵌入式软件开发与物联网控制的完整创客实践过程。</p>
+        <section id="sec1">
+            <h1>THE MAKER'S DOSSIER</h1>
+            <p class="cn-title">从代码到实物：课程日志</p>
+            <p style="text-align: center; font-family: 'Courier Prime'; color: var(--ink-light); margin-bottom: 40px;">-
+                COURSE PROJECT RECORD -</p>
 
-        <section id="task1">
-            <h2>任务1：从3D建模到3D打印 (致敬交大130周年校庆)</h2>
-            <p>在这个任务中，我使用 <strong>SOLIDWORKS</strong> 软件进行了西南交通大学校门的3D建模设计，随后使用 <strong>拓竹 A1 mini</strong>
-                3D打印机将其转化为实物模型。以此礼赞西南交大130年校庆。</p>
+            <h2>01 // 个人简介</h2>
+            <div class="notice-box">
+                <p><strong>姓名：</strong> 黄新雄</p>
+                <p><strong>专业：</strong> 计算机科学与技术</p>
+                <p><strong>学校：</strong> 西南交通大学</p>
+            </div>
+            <p><strong>简述：</strong>
+                本日志完整记录了在《从代码到实物》课程中，从理论学习、软硬件结合测试，到最终完成实物项目的全过程。</p>
+        </section>
+
+        <section id="sec2">
+            <h2>02 // 什么是创客</h2>
+            <p>创客（Maker）是一群热衷于将创意转化为现实的人，强调“动手实践”、“知识共享”与“跨界融合”。</p>
+            <p>在数字时代，我们不再局限于软件开发，而是利用 3D 打印机、激光切割、开源硬件（如 ESP32 系列开发板）以及代码逻辑，去创造能够感知和影响真实世界的物理实体。创客精神的核心就是不断试错并解决实际问题。
+            </p>
+        </section>
+
+        <section id="sec3">
+            <h2>03 // Git 协作记录</h2>
+            <p>为了保证项目代码和文档的版本迭代可追溯，我在本地建立文件夹后，使用 Git 工具将其初始化为本地仓库，并推送到远端的 Gitee 与 GitHub。</p>
+            <p><strong>具体操作：</strong></p>
+            <ul>
+                <li>在终端使用 <code>git init</code> 初始化项目文件夹。</li>
+                <li>每次修改完代码或更新完 HTML 日志后，使用 <code>git add .</code> 将改动存入暂存区。</li>
+                <li>使用 <code>git commit -m "更新说明"</code> 提交版本说明。</li>
+                <li>通过配置 Remote 远程地址，使用 <code>git push</code> 将内容同步更新至云端仓库。</li>
+            </ul>
+        </section>
+
+        <section id="sec4">
+            <h2>04 // 3D建模与打印</h2>
+            <h3 id="sec4-1">项目：致敬交大130周年校门复刻</h3>
+            <p><strong>操作过程：</strong></p>
+            <ul>
+                <li><strong>建模阶段：</strong> 使用 SOLIDWORKS 软件根据真实比例对校门进行三维建模，重点处理了内部拱门的镂空与底部的支撑结构设计，并导出为 STL 格式文件。</li>
+                <li><strong>切片与打印：</strong> 将模型导入拓竹切片软件（Bambu Studio），设置合理的层高、支撑生成策略和填充密度。随后通过网络发送至拓竹 A1 mini 打印机进行实际打印。
+                </li>
+                <li><strong>后处理：</strong> 打印完成后，小心拆除模型底部的支撑材料，完成最终的实物打卡。</li>
+            </ul>
 
             <div class="image-grid">
-                <figure>
-                    <img src="images/pic1.png" alt="交大校门正面3D模型">
-                    <figcaption>图1：SOLIDWORKS 中的交大校门正面3D模型，带有“西南交通大学”字样</figcaption>
+                <figure><img src="images/pic1.png" alt="交大校门正面3D模型">
+                    <figcaption>Fig.1 SOLIDWORKS 正面建模</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic2.png" alt="交大校门背面模型">
-                    <figcaption>图2：校门模型的背面视角与内部拱门结构</figcaption>
+                <figure><img src="images/pic2.png" alt="交大校门背面模型">
+                    <figcaption>Fig.2 内部拱门结构分析</figcaption>
+                </figure>
+                <figure><img src="images/pic3.png" alt="底部视角结构">
+                    <figcaption>Fig.3 底部支撑架构</figcaption>
+                </figure>
+                <figure><img src="images/pic4.png" alt="模型整体预览">
+                    <figcaption>Fig.4 整体渲染图</figcaption>
                 </figure>
             </div>
-            <div class="image-grid">
-                <figure>
-                    <img src="images/pic3.png" alt="底部视角结构">
-                    <figcaption>图3：校门底部透视与结构细节设计</figcaption>
+            <div class="image-grid" style="grid-template-columns: 1fr 1fr;">
+                <figure><img src="images/pic5.jpg" alt="3D打印成品实物">
+                    <figcaption>Fig.5 拓竹A1 mini 打印成品</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic4.png" alt="模型整体预览">
-                    <figcaption>图4：3D模型整体渲染预览</figcaption>
-                </figure>
-            </div>
-            <div class="image-grid">
-                <figure>
-                    <img src="images/pic5.jpg" alt="3D打印成品实物">
-                    <figcaption>图5：拓竹 A1 mini 打印完成的西南交大校门实物</figcaption>
-                </figure>
-                <figure>
-                    <img src="images/pic6.jpg" alt="实物打卡">
-                    <figcaption>图6：将3D打印模型与真实的交大校门合影打卡</figcaption>
+                <figure><img src="images/pic6.jpg" alt="实物打卡">
+                    <figcaption>Fig.6 实物与真实校门对比</figcaption>
                 </figure>
             </div>
         </section>
 
-        <section id="task2">
-            <h2>任务2：电子焊接练习</h2>
-            <p>本次任务完成了一块LED闪灯电路板的焊接作业。通过练习，我掌握了直插式元器件的焊接技巧，提升了焊接水平，为后续的嵌入式硬件开发打下了基础。</p>
+        <section id="sec5">
+            <h2>05 // 电子焊接实验</h2>
+            <p><strong>操作过程：</strong></p>
+            <p>本次实验目的是完成一块 LED 闪灯电路板的焊接。首先预热电烙铁，将 IC 底座、LED 指示灯、色环电阻与电容依次插入 PCB
+                板对应孔位。使用烙铁头同时加热焊盘与引脚，送入焊锡丝形成标准的圆锥形焊点，冷却后使用斜口钳剪去多余引脚，最后通电测试电路是否连通。</p>
             <div class="image-grid">
-                <figure>
-                    <img src="images/pic7.jpg" alt="闪灯PCB板正面">
-                    <figcaption>图7：PCB正面实拍，包含IC底座、LED指示灯、电阻与电容</figcaption>
+                <figure><img src="images/pic7.jpg" alt="闪灯PCB板正面">
+                    <figcaption>Fig.7 PCB 元件面实拍</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic8.jpg" alt="PCB板背面焊点">
-                    <figcaption>图8：PCB背面实拍，焊点饱满均匀，无虚焊与连锡现象</figcaption>
+                <figure><img src="images/pic8.jpg" alt="PCB板背面焊点">
+                    <figcaption>Fig.8 焊盘与引脚熔接细节</figcaption>
                 </figure>
             </div>
         </section>
 
-        <section id="task3">
-            <h2>任务3：嵌入式练习 (ESP32)</h2>
-            <p>使用 ESP32 系列开发板进行基础的 GPIO 控制与串口通信实验。</p>
+        <section id="sec6">
+            <h2>06 // 嵌入式计算测试</h2>
+            <p>在熟练使用面包板的基础上，利用 ESP32 微控制器进行了以下一系列输入/输出实验：</p>
 
-            <h3 id="task3-1">1. HelloWorld (串口通信)</h3>
-            <p>初始化串口通信，使开发板向电脑终端持续输出 "hello world"。</p>
-            <pre><code>void setup() {
-  Serial.begin(9600); // 设置波特率为9600
-}
-
+            <h3 id="sec6-1">测试 01: HelloWorld (串口通讯)</h3>
+            <pre><code class="language-cpp">void setup() { Serial.begin(9600); }
 void loop() {
   Serial.println("hello world");
-  delay(500); // 延时500毫秒
+  delay(500);
 }</code></pre>
-            <figure>
-                <img src="images/pic9.png" alt="串口输出Hello World">
-                <figcaption>图9：Arduino IDE 串口监视器成功接收到开发板发送的 hello world 数据</figcaption>
+            <figure style="max-width: 500px; margin: 0 auto;"><img src="images/pic9.png" alt="串口输出">
+                <figcaption>Fig.9 串口监视器接收数据</figcaption>
             </figure>
 
-            <h3 id="task3-2">2. 数字输出 (控制LED闪烁)</h3>
-            <p>使用 <code>digitalWrite()</code> 函数控制特定引脚输出高低电平，驱动面包板上的外接LED灯闪烁。</p>
-            <pre><code>#define LEDPIN 40
-
-void setup() {
-  pinMode(LEDPIN, OUTPUT); // 设置引脚为输出模式
-}
-
-void loop() {
-  digitalWrite(LEDPIN, HIGH); // 点亮LED
-  delay(100);
-  digitalWrite(LEDPIN, LOW);  // 熄灭LED
-  delay(100);
-}</code></pre>
-            <figure>
-                <img src="images/pic10.png" alt="LED闪烁实物接线">
-                <figcaption>图10：ESP32 连接面包板，通过数字引脚驱动LED灯闪烁的实物接线图</figcaption>
+            <h3 id="sec6-2">测试 02: 数字输出 (LED指令)</h3>
+            <figure style="max-width: 500px; margin: 20px auto;"><img src="images/pic10.png" alt="LED闪烁实物接线">
+                <figcaption>Fig.10 控制 LED 闪烁接线</figcaption>
             </figure>
 
-            <h3 id="task3-3">3. 数字输入 (读取按键状态)</h3>
-            <p>使用自恢复按键开关与下拉电阻构建电路，通过 <code>digitalRead()</code> 读取按键状态并在串口绘图器中观察电平变化。</p>
-            <pre><code>#define BUTTONPIN 40
-int in;
-
-void setup() {
-  pinMode(BUTTONPIN, INPUT); // 设置引脚为输入模式
-  Serial.begin(9600);
-}
-
-void loop() {
-  in = digitalRead(BUTTONPIN); // 读取按键电平
-  Serial.println(in); // 输出到串口
-  delay(100);
-}</code></pre>
+            <h3 id="sec6-3">测试 03: 数字输入 (按键状态检测)</h3>
             <div class="image-grid">
-                <figure>
-                    <img src="images/pic11.png" alt="按键电路接线图">
-                    <figcaption>图11：面包板上的按键输入电路实物连接图</figcaption>
+                <figure><img src="images/pic11.png" alt="按键电路接线图">
+                    <figcaption>Fig.11 面包板物理按键回路</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic12.png" alt="串口监视器读取状态">
-                    <figcaption>图12：串口监视器实时打印按键的高低电平状态 (0和1)</figcaption>
+                <figure><img src="images/pic12.png" alt="串口监视器读取状态">
+                    <figcaption>Fig.12 读取高低电平</figcaption>
                 </figure>
             </div>
-            <figure>
-                <img src="images/pic13.png" alt="串口绘图器波形图">
-                <figcaption>图13：Arduino IDE 串口绘图器直观展示按键按下与松开时的波形跳变</figcaption>
+            <figure><img src="images/pic13.png" alt="串口绘图器波形图">
+                <figcaption>Fig.13 串口绘图器展示按键波形</figcaption>
             </figure>
 
-            <h3 id="task3-4">4. 模拟输出 (PWM 呼吸灯)</h3>
-            <p>使用 <code>analogWrite()</code> 函数输出不同占空比的 PWM 信号，实现 LED 亮度的渐变效果（呼吸灯）。</p>
-            <pre><code>#define APIN 40
-
-void setup() {
-  analogWriteResolution(APIN, 10); // 设置10位分辨率
-}
-
-void loop() {
-  analogWrite(APIN, 1023); delay(100);
-  analogWrite(APIN, 768);  delay(100);
-  analogWrite(APIN, 512);  delay(100);
-  analogWrite(APIN, 256);  delay(100);
-  analogWrite(APIN, 128);  delay(100);
-  analogWrite(APIN, 64);   delay(100);
-}</code></pre>
-            <figure>
-                <img src="images/pic14.png" alt="呼吸灯实物接线">
-                <figcaption>图14：PWM 模拟输出驱动 LED 呼吸灯实物接线图</figcaption>
+            <h3 id="sec6-4">测试 04: 模拟输出 (PWM 脉宽调制)</h3>
+            <figure style="max-width: 500px; margin: 20px auto;"><img src="images/pic14.png" alt="呼吸灯实物接线">
+                <figcaption>Fig.14 模拟呼吸灯接线</figcaption>
             </figure>
 
-            <h3 id="task3-5">5. 模拟输入 (光敏电阻读取环境光)</h3>
-            <p>通过光敏电阻组成分压电路，使用 <code>analogRead()</code> 读取环境光强度对应的模拟电压值。</p>
-            <figure>
-                <img src="images/pic15.png" alt="光敏电阻接线实物">
-                <figcaption>图15：ESP32 连接光敏电阻，实时采集环境光强度模拟信号</figcaption>
+            <h3 id="sec6-5">测试 05: 模拟输入 (光线侦测)</h3>
+            <figure style="max-width: 500px; margin: 20px auto;"><img src="images/pic15.png" alt="光敏电阻接线实物">
+                <figcaption>Fig.15 光敏电阻分压采集</figcaption>
             </figure>
+
+            <h3 id="sec6-6">测试 06: 无线局域网控制 (Web Server)</h3>
+            <div class="image-grid">
+                <figure><img src="images/pic16.png" alt="连接WiFi成功">
+                    <figcaption>Fig.16 成功连接 WiFi 并分配 IP</figcaption>
+                </figure>
+                <figure><img src="images/pic17.png" alt="浏览器Web Server界面">
+                    <figcaption>Fig.17 局域网控制面板</figcaption>
+                </figure>
+            </div>
         </section>
 
-        <section id="task4">
-            <h2>任务4：物联网与高级控制</h2>
+        <section id="sec7">
+            <h2>07 // 中期创客项目：复古光学摩斯密码机 V5.0</h2>
 
-            <h3 id="task4-1">6. WiFi Web Server (网页控制LED)</h3>
-            <p>利用 ESP32 强大的无线功能接入局域网，建立一个简单的 HTTP Web 服务器，通过手机或电脑浏览器直接控制硬件板载的 LED 灯。</p>
+            <div class="notice-box">
+                <p><strong>项目简介：</strong></p>
+                <p>基于 ESP32 主控，整合了光敏侦测与机械按键双路输入的摩斯密码解析系统，并在本地建立 Web Server，实现了实体敲击与网页端数据显示的交互互通。</p>
+            </div>
+
+            <h3>团队成员与分工</h3>
+            <p>本项目由 <strong>黄新雄</strong> 与 <strong>邓童</strong> 协作完成。具体分工涵盖了硬件电路搭建、3D外壳建模、C++ 解析逻辑编写及前端网页控制台的整合。</p>
+
+            <h3>具体操作过程</h3>
+            <ol>
+                <li><strong>硬件电路搭建与验证：</strong>
+                    首先在面包板上搭建原型电路。利用光敏电阻与固定电阻串联构成 <strong>分压电路</strong>，接入 ESP32 的模拟输入引脚以采集光照阈值；同时接入机械按键并配置下拉电阻读取高低电平。
+                </li>
+                <li><strong>结构设计与组装：</strong>
+                    根据面包板与主控板的实际尺寸，设计并使用 3D 打印机打印了专用的外壳。将接线完毕的面包板整体嵌入壳体，确保外部光线能准确照射到光敏电阻，按键留有操作孔位。</li>
+                <li><strong>软件开发与算法调试：</strong>
+                    <ul>
+                        <li><strong>时间差算法：</strong> 放弃了容易引起死机的 <code>delay()</code> 方案，改用 <code>millis()</code>
+                            函数记录触发的下降沿和上升沿，计算时间差。</li>
+                        <li><strong>双模逻辑判定：</strong> 按键模式下，按下 50ms~2s 判定为“点(.)”，大于 2s 判定为“划(-)”；光感模式下，为了防抖，遮光 2~4s
+                            才判定为“点(.)”，大于 4s 判定为“划(-)”。</li>
+                        <li><strong>通信层：</strong> 使用 <code>&lt;WebServer.h&gt;</code> 搭建网页端，通过 <code>/data</code>
+                            接口返回包含当前输入缓冲区和已解密字母的 JSON 数据，实现网页端每 500ms 的自动刷新反馈。</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>项目实物展示</h3>
             <div class="image-grid">
-                <figure>
-                    <img src="images/pic16.png" alt="连接WiFi成功">
-                    <figcaption>图16：ESP32 成功连接局域网 WiFi，串口监视器打印出分配的 IP 地址 (192.168.43.216)</figcaption>
+                <figure><img src="images/pic25.jpg" alt="基础连线">
+                    <figcaption>Fig.25 面包板基础连线测试</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic17.png" alt="浏览器Web Server界面">
-                    <figcaption>图17：使用浏览器访问开发板IP地址，点击超链接即可无线控制板载 LED 灯的亮灭</figcaption>
+                <figure><img src="images/pic26.jpg" alt="3D外壳">
+                    <figcaption>Fig.26 嵌入定制 3D 打印外壳</figcaption>
+                </figure>
+                <figure><img src="images/pic27.jpg" alt="连线细节">
+                    <figcaption>Fig.27 ESP32 杜邦线走线梳理</figcaption>
+                </figure>
+                <figure><img src="images/pic28.jpg" alt="分压电路">
+                    <figcaption>Fig.28 光敏电阻分压电路特写</figcaption>
+                </figure>
+                <figure><img src="images/pic29.jpg" alt="引脚特写">
+                    <figcaption>Fig.29 主控板引脚接线细节</figcaption>
                 </figure>
             </div>
 
-            <h3 id="task4-2">7. 扩展：舵机控制与 WiFi 远程舵机</h3>
-            <p>结合 <code>ESP32Servo</code> 库生成精准的 50Hz PWM 信号来驱动舵机旋转。进一步，将 Web Server 的概念扩展至舵机控制，实现了网页端发送 GET 请求（如
-                <code>/R</code> 和 <code>/L</code>）来控制物理舵机向左或向右转动，完成了从代码到机械动作的物联网闭环。
+            <h3>源代码展示</h3>
+            <pre><code class="language-cpp">/**
+ * 项目：复古光学摩斯密码机 V5.0
+ * 核心逻辑：基于 millis() 的双模时间差计算
+ */
+
+#include &lt;WiFi.h&gt;
+#include &lt;WebServer.h&gt;
+
+const int LDR_PIN = 4;       
+const int BUTTON_PIN = 6;    
+const int LED_PIN = 15;      
+
+const char *ssid = "TitanicRising";
+const char *password = "20060426";
+
+// --- 判定参数 (毫秒) ---
+const int LIGHT_THRESHOLD = 7500;  
+const unsigned long BTN_DASH_TIME = 2000;
+const unsigned long LDR_DOT_MIN = 2000;  
+const unsigned long LDR_DASH_MIN = 4000; 
+
+WebServer server(80);
+String morseBuffer = "";    
+String decodedMessage = ""; 
+unsigned long startTime = 0;
+bool isActive = false;      
+bool buttonMode = false;    
+
+char decodeMorse(String s) {
+  if (s == ".-") return 'A';   if (s == "-...") return 'B'; 
+  if (s == "-.-.") return 'C'; if (s == "-..") return 'D';  
+  if (s == ".") return 'E';    if (s == "..-.") return 'F';
+  // ... 摩斯密码字典映射
+  return '?';
+}
+
+void loop() {
+  server.handleClient();
+  
+  // 状态轮询：根据当前模式读取物理输入
+  bool triggered = buttonMode ? (digitalRead(BUTTON_PIN) == LOW) : (analogRead(LDR_PIN) &gt;= LIGHT_THRESHOLD);
+
+  if (triggered &amp;&amp; !isActive) {
+    startTime = millis(); // 记录起始时间
+    isActive = true;
+    digitalWrite(LED_PIN, HIGH);
+  }
+
+  if (!triggered &amp;&amp; isActive) {
+    unsigned long dur = millis() - startTime; // 计算持续时长
+    isActive = false;
+    digitalWrite(LED_PIN, LOW);
+
+    // 逻辑判定树
+    if (buttonMode) {
+      if (dur &gt;= BTN_DASH_TIME) morseBuffer += "-";
+      else if (dur &gt; 50) morseBuffer += "."; // 50ms 软件消抖
+    } else {
+      if (dur &gt;= LDR_DASH_MIN) morseBuffer += "-"; 
+      else if (dur &gt;= LDR_DOT_MIN) morseBuffer += "."; 
+    }
+    Serial.println("当前缓冲区: " + morseBuffer);
+  }
+}</code></pre>
+        </section>
+
+        <section id="sec8">
+            <h2>08 // PCB 电路板设计</h2>
+            <p>依托嘉立创 EDA 工具，进行了标准化印制电路板（PCB）的全流程设计。</p>
+
+            <h3 id="sec8-1">项目一：校庆 LED 电子徽章</h3>
+            <p><strong>操作过程：</strong> 结合 AI 提取出的西南交大“银杏叶”轮廓，导入 EDA 软件作为板框。布置 LED 和电阻元件，设置走线宽度为 1mm，并在布线时全部采用标准的 45°
+                倒角，最后生成 3D 预览效果。</p>
+            <div class="image-grid">
+                <figure><img src="images/pic18.png" alt="银杏叶LED徽章PCB设计图">
+                    <figcaption>Fig.18 银杏叶 PCB 布局与走线</figcaption>
+                </figure>
+                <figure><img src="images/pic19.png" alt="银杏叶LED徽章3D预览图">
+                    <figcaption>Fig.19 3D 渲染预览</figcaption>
+                </figure>
+            </div>
+
+            <h3 id="sec8-2">项目二：TP4056 锂电池充电管理模块</h3>
+            <p><strong>操作过程：</strong>
+                <br>1. <strong>查阅手册：</strong> 阅读 TP4056 芯片数据手册，明确各管脚定义及外围电容电阻的选型参数。
+                <br>2. <strong>原理图绘制：</strong> 放置芯片、电阻、电容及 Mini-USB 接口，使用网络标签（如 VCC, GND, BAT）连接线路。
+                <br>3. <strong>PCB 布局布线：</strong> 将原理图转为 PCB，合理放置元器件位置，对电源线进行加宽处理，并在顶层与底层铺设 GND 覆铜（泪滴处理）。
+                <br>4. <strong>规则检查：</strong> 运行 DRC（设计规则检查）确保无短路断路，最终导出可生产的 Gerber 文件。
             </p>
-            <pre><code>// 截取核心的 Web Server 舵机控制逻辑
-if (currentLine.endsWith("GET /R")) {
-  int duty0 = 4096 * 0.5 / 20;
-  ledcWrite(LED_PIN, duty0); // 舵机归零
-}
-if (currentLine.endsWith("GET /L")) {
-  int duty180 = 4096 * 2.5 / 20;
-  ledcWrite(LED_PIN, duty180); // 舵机旋转180度
-}</code></pre>
-        </section>
-
-        <section id="task5">
-            <h2>任务5：EDA电路板设计实践</h2>
-            <p>在熟练掌握基础硬件后，我进一步学习了使用嘉立创EDA进行专业PCB电路板设计的全流程，完成了两个具有实际应用价值的硬件项目。</p>
-
-            <h3 id="task5-1">项目一：130周年校庆专属LED电子徽章 (AI辅助设计)</h3>
-            <p>结合西南交大130周年校庆，我运用AI辅助生成了学校具有代表性的“银杏叶”轮廓，并以此为基础设计了一款LED发光徽章。设计中严格遵循了硬件布线规范：包含关键的元器件，精确控制整体尺寸为 61.596mm ×
-                41.402mm，走线宽度设置为1mm，且所有导线拐角均采用标准的45°走线。</p>
-            <div class="image-grid">
-                <figure>
-                    <img src="images/pic18.jpg" alt="银杏叶LED徽章PCB设计图">
-                    <figcaption>图18：银杏叶造型LED电子徽章 PCB 布局布线图</figcaption>
-                </figure>
-                <figure>
-                    <img src="images/pic19.png" alt="银杏叶LED徽章3D预览图">
-                    <figcaption>图19：生成的电路板 3D 渲染预览效果</figcaption>
-                </figure>
-            </div>
-
-            <h3 id="task5-2">项目二：TP4056 锂电池充电管理电路设计</h3>
-            <p>本项目旨在复刻并独立设计一个实用的锂电池充电模块。核心芯片选用带有底部散热片的 TP4056。项目流程涵盖了从元器件选型、数据手册研读、原理图绘制到PCB布局铺铜的完整环节。</p>
-            <ul>
-                <li><strong>原理图设计与功能分析：</strong>仔细研读数据手册后绘制了原理图，整理了管脚功能表，并深入分析了外围电阻的限流/编程选型以及电容的滤波作用。设计中规范使用了网络标签（如BAT），并调用了扩展库中的
-                    MINI_USB 封装。</li>
-                <li><strong>PCB布局布线：</strong>追求布局合理、信号走向清晰，将输入输出接口规划在电路板边缘。采用圆角矩形边框使外观更紧凑美观。布线时，VCC电源线进行了适当的实线填充以增加载流能力，并对全板进行了
-                    GND 网络的铺铜处理。</li>
-                <li><strong>工程检验与输出：</strong>在原理图与PCB绘制完成后，严格执行了网络检查与 DRC（设计规则检查）优化走线，最终顺利导出可用于制造的 Gerber 文件。</li>
-            </ul>
-            <figure>
-                <img src="images/pic23.jpg" alt="TP4056管脚功能表">
-                <figcaption>图20：研读数据手册后整理的 TP4056 管脚功能及实际连接分析表</figcaption>
+            <figure style="max-width: 600px; margin: 20px auto;"><img src="images/pic23.jpg" alt="TP4056管脚功能表">
+                <figcaption>Fig.20 TP4056 管脚功能解析表</figcaption>
             </figure>
-            <figure>
-                <img src="images/pic20.jpg" alt="TP4056充电电路原理图">
-                <figcaption>图21：TP4056 锂电池充电管理模块完整原理图设计</figcaption>
+            <figure style="max-width: 600px; margin: 20px auto;"><img src="images/pic20.jpg" alt="TP4056充电电路原理图">
+                <figcaption>Fig.21 充电模块原理图设计</figcaption>
             </figure>
             <div class="image-grid">
-                <figure>
-                    <img src="images/pic21.jpg" alt="TP4056充电电路PCB图">
-                    <figcaption>图22：完成布局、布线及 GND 全板铺铜的 PCB 视图</figcaption>
+                <figure><img src="images/pic21.jpg" alt="TP4056充电电路PCB图">
+                    <figcaption>Fig.22 GND 铺铜与丝印展示</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic22.jpg" alt="网络与DRC检查">
-                    <figcaption>图23：软件左侧边栏展示的完整元器件列表与网络拓扑</figcaption>
+                <figure><img src="images/pic22.jpg" alt="网络与DRC检查">
+                    <figcaption>Fig.23 左侧网络列表与 DRC 检查通过</figcaption>
                 </figure>
             </div>
         </section>
 
-        <section id="task6">
-            <h2>任务6：激光切割与制造实践</h2>
-
-            <h3 id="task6-1">项目：校庆元素定制书签</h3>
-            <p>除了增材制造（3D打印）与电路板设计，我还深入体验了减材制造的工艺流程。在这个项目中，我使用 <strong>EagleWorks</strong>
-                激光切割软件，设计并制作了一款带有西南交通大学标志性元素的木质（或亚克力）书签，作为校庆的专属纪念周边。</p>
+        <section id="sec9">
+            <h2>09 // 设计思维 (Design Thinking)</h2>
+            <p>在硬件项目的开发中，设计思维指导了我们的完整流程：</p>
             <ul>
-                <li><strong>矢量图设计与排版：</strong>在软件中，我精细调整了交大校门轮廓的矢量路径以及“西南交通大学”等字体的线条走向，确保封闭路径的完整性，避免在实际切割中出现断线或掉块的现象。
-                </li>
-                <li><strong>加工参数调试：</strong>为了达到最佳的切割与雕刻效果，我针对性地配置了激光设备的参数。如图所示，主光束的最小与最大功率均设定为
-                    <code>63.0%</code>，切割速度设定为 <code>23.00 mm/s</code>。这些参数的调优确保了激光能够顺利切透材料，同时边缘平滑且不会产生严重的烧焦痕迹。
-                </li>
-                <li><strong>路径优化：</strong>在数据输出前，开启了“路径优化”功能，缩短了激光头的空切距离，有效提高了机器的工作效率。</li>
+                <li><strong>Empathize (共情)：</strong> 从实际需求出发，明确需要解决什么问题。</li>
+                <li><strong>Define (定义)：</strong> 锁定技术难点（如按键抖动、光线干扰）。</li>
+                <li><strong>Ideate (构思)：</strong> 提出解决方案，比如在代码中加入基于时间的阈值过滤算法。</li>
+                <li><strong>Prototype (原型)：</strong> 使用面包板或 3D 打印机快速制作粗略版本验证可行性。</li>
+                <li><strong>Test (测试)：</strong> 软硬联调，不断根据输出结果修正代码逻辑。</li>
             </ul>
-            <figure>
-                <img src="images/pic24.jpg" alt="EagleWorks激光切割书签排版设计图">
-                <figcaption>图24：在 EagleWorks 中进行校庆元素书签的矢量路径排版与加工参数（功率、速度）设定</figcaption>
+        </section>
+
+        <section id="sec10">
+            <h2>10 // 期末创新项目</h2>
+            <div class="notice-box">
+                <p><strong>项目名称：</strong> [待填写]</p>
+            </div>
+            <h3>团队成员</h3>
+            <p>[填写期末项目的团队成员及具体分工]</p>
+            <h3>具体操作过程</h3>
+            <p>[详细记录期末项目的软硬件结合过程、技术难点、调试步骤及最终解决方案]</p>
+            <h3>成果展示</h3>
+            <p>[在此处插入期末最终创新成品的视频或核心图片]</p>
+        </section>
+
+        <section id="sec11">
+            <h2>附加 // 激光切割实践</h2>
+            <h3 id="sec11-1">项目：校庆元素定制书签</h3>
+            <p><strong>操作过程：</strong></p>
+            <p>1. <strong>图形处理：</strong> 设计并排版带有西南交通大学标志性元素的矢量图形，导入 EagleWorks 激光切割软件。</p>
+            <p>2. <strong>参数设定：</strong> 将木板固定在操作台上，调试焦距。在软件中设定最小和最大激光功率为 <strong>63.0%</strong>，切割速度设定为 <strong>23.00
+                    mm/s</strong>，以保证切透的同时边缘不会严重焦黑。</p>
+            <p>3. <strong>加工输出：</strong> 勾选软件内的“路径优化”功能减少空切时间，开启排烟设备，下发加工指令完成减材切割。</p>
+            <figure style="max-width: 600px; margin: 20px auto;">
+                <img src="images/pic24.png" alt="EagleWorks激光切割书签排版设计图">
+                <figcaption>Fig.24 激光加工台参数设定界面</figcaption>
             </figure>
         </section>
 
     </main>
+
+    <script>
+        function toggleSubMenu(element) {
+            // 切换激活状态以改变箭头方向和颜色
+            element.classList.toggle("active");
+
+            // 获取紧接其后的子菜单 div
+            var subMenu = element.nextElementSibling;
+
+            // 切换高度动画
+            if (subMenu.style.maxHeight) {
+                subMenu.style.maxHeight = null;
+            } else {
+                subMenu.style.maxHeight = subMenu.scrollHeight + "px";
+            }
+        }
+    </script>
 </body>
 
 </html>

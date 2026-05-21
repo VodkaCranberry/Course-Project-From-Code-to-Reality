@@ -88,6 +88,15 @@
             color: #555;
         }
 
+        ul {
+            color: #555;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
         /* 代码块样式 */
         pre {
             background: #1e1e1e;
@@ -153,11 +162,16 @@
         <a href="#task4">任务4：物联网与舵机</a>
         <a href="#task4-1"> - WiFi Web Server</a>
         <a href="#task4-2"> - 舵机与WiFi控制</a>
+        <a href="#task5">任务5：EDA电路板设计实践</a>
+        <a href="#task5-1"> - 项目一：校庆专属LED徽章</a>
+        <a href="#task5-2"> - 项目二：锂电池充电管理电路</a>
+        <a href="#task6">任务6：激光切割实践</a>
+        <a href="#task6-1"> - 项目：校庆元素定制书签</a>
     </nav>
 
     <main>
         <h1>从代码到实物：我的创客练习日志</h1>
-        <p>本日志记录了从机械结构设计、电子元器件焊接，再到嵌入式软件开发与物联网控制的完整创客实践过程。</p>
+        <p>本日志记录了从机械结构设计、减材制造、电子元器件焊接，再到嵌入式软件开发与物联网控制的完整创客实践过程。</p>
 
         <section id="task1">
             <h2>任务1：从3D建模到3D打印 (致敬交大130周年校庆)</h2>
@@ -337,6 +351,73 @@ if (currentLine.endsWith("GET /L")) {
   int duty180 = 4096 * 2.5 / 20;
   ledcWrite(LED_PIN, duty180); // 舵机旋转180度
 }</code></pre>
+        </section>
+
+        <section id="task5">
+            <h2>任务5：EDA电路板设计实践</h2>
+            <p>在熟练掌握基础硬件后，我进一步学习了使用嘉立创EDA进行专业PCB电路板设计的全流程，完成了两个具有实际应用价值的硬件项目。</p>
+
+            <h3 id="task5-1">项目一：130周年校庆专属LED电子徽章 (AI辅助设计)</h3>
+            <p>结合西南交大130周年校庆，我运用AI辅助生成了学校具有代表性的“银杏叶”轮廓，并以此为基础设计了一款LED发光徽章。设计中严格遵循了硬件布线规范：包含关键的元器件，精确控制整体尺寸为 61.596mm ×
+                41.402mm，走线宽度设置为1mm，且所有导线拐角均采用标准的45°走线。</p>
+            <div class="image-grid">
+                <figure>
+                    <img src="images/pic18.jpg" alt="银杏叶LED徽章PCB设计图">
+                    <figcaption>图18：银杏叶造型LED电子徽章 PCB 布局布线图</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/pic19.png" alt="银杏叶LED徽章3D预览图">
+                    <figcaption>图19：生成的电路板 3D 渲染预览效果</figcaption>
+                </figure>
+            </div>
+
+            <h3 id="task5-2">项目二：TP4056 锂电池充电管理电路设计</h3>
+            <p>本项目旨在复刻并独立设计一个实用的锂电池充电模块。核心芯片选用带有底部散热片的 TP4056。项目流程涵盖了从元器件选型、数据手册研读、原理图绘制到PCB布局铺铜的完整环节。</p>
+            <ul>
+                <li><strong>原理图设计与功能分析：</strong>仔细研读数据手册后绘制了原理图，整理了管脚功能表，并深入分析了外围电阻的限流/编程选型以及电容的滤波作用。设计中规范使用了网络标签（如BAT），并调用了扩展库中的
+                    MINI_USB 封装。</li>
+                <li><strong>PCB布局布线：</strong>追求布局合理、信号走向清晰，将输入输出接口规划在电路板边缘。采用圆角矩形边框使外观更紧凑美观。布线时，VCC电源线进行了适当的实线填充以增加载流能力，并对全板进行了
+                    GND 网络的铺铜处理。</li>
+                <li><strong>工程检验与输出：</strong>在原理图与PCB绘制完成后，严格执行了网络检查与 DRC（设计规则检查）优化走线，最终顺利导出可用于制造的 Gerber 文件。</li>
+            </ul>
+            <figure>
+                <img src="images/pic23.jpg" alt="TP4056管脚功能表">
+                <figcaption>图20：研读数据手册后整理的 TP4056 管脚功能及实际连接分析表</figcaption>
+            </figure>
+            <figure>
+                <img src="images/pic20.jpg" alt="TP4056充电电路原理图">
+                <figcaption>图21：TP4056 锂电池充电管理模块完整原理图设计</figcaption>
+            </figure>
+            <div class="image-grid">
+                <figure>
+                    <img src="images/pic21.jpg" alt="TP4056充电电路PCB图">
+                    <figcaption>图22：完成布局、布线及 GND 全板铺铜的 PCB 视图</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/pic22.jpg" alt="网络与DRC检查">
+                    <figcaption>图23：软件左侧边栏展示的完整元器件列表与网络拓扑</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="task6">
+            <h2>任务6：激光切割与制造实践</h2>
+
+            <h3 id="task6-1">项目：校庆元素定制书签</h3>
+            <p>除了增材制造（3D打印）与电路板设计，我还深入体验了减材制造的工艺流程。在这个项目中，我使用 <strong>EagleWorks</strong>
+                激光切割软件，设计并制作了一款带有西南交通大学标志性元素的木质（或亚克力）书签，作为校庆的专属纪念周边。</p>
+            <ul>
+                <li><strong>矢量图设计与排版：</strong>在软件中，我精细调整了交大校门轮廓的矢量路径以及“西南交通大学”等字体的线条走向，确保封闭路径的完整性，避免在实际切割中出现断线或掉块的现象。
+                </li>
+                <li><strong>加工参数调试：</strong>为了达到最佳的切割与雕刻效果，我针对性地配置了激光设备的参数。如图所示，主光束的最小与最大功率均设定为
+                    <code>63.0%</code>，切割速度设定为 <code>23.00 mm/s</code>。这些参数的调优确保了激光能够顺利切透材料，同时边缘平滑且不会产生严重的烧焦痕迹。
+                </li>
+                <li><strong>路径优化：</strong>在数据输出前，开启了“路径优化”功能，缩短了激光头的空切距离，有效提高了机器的工作效率。</li>
+            </ul>
+            <figure>
+                <img src="images/pic24.jpg" alt="EagleWorks激光切割书签排版设计图">
+                <figcaption>图24：在 EagleWorks 中进行校庆元素书签的矢量路径排版与加工参数（功率、速度）设定</figcaption>
+            </figure>
         </section>
 
     </main>

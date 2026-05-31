@@ -667,49 +667,244 @@ void loop() {
         </section>
 
         <section id="sec10">
-            <h2>10 // 期末创新项目：智能植物卫士 IoT 控制台</h2>
+            <h2>10 // 期末创新项目：智能土壤湿度监测系统 / 智能植物卫士 IoT 控制台</h2>
+
             <div class="notice-box">
-                <p><strong>项目简介：</strong></p>
-                <p>一款基于 ESP32-S2 的物联网桌面设备，通过高精度土壤湿度采集与双端（本地 TFT 彩屏 + 远程 Web）实时监控，配合智能阈值警报，彻底解决都市打工人忘记浇水或过度浇水的痛点。</p>
+                <p><strong>项目名称：</strong>智能土壤湿度监测系统</p>
+                <p><strong>一句话定义：</strong>基于 ESP32 开发板搭建智能土壤湿度监测设备，通过土壤湿度传感器采集数据，湿度偏低时蜂鸣器声光报警，TFT
+                    彩屏实时展示数值与设备状态，并搭配手机网页实现远程查看、参数设置与报警关闭。</p>
+                <p><strong>应用场景：</strong>家庭绿植养护、阳台盆栽管理、农田简易监测、校园植物实训、室内园艺照料。</p>
+                <p><strong>产品亮点：</strong>硬件搭建简单、数据采集直观、支持远程网页操控、阈值可自定义调节、声光提醒及时、低成本易复刻。</p>
             </div>
 
             <h3>团队成员与分工</h3>
             <ul>
-                <li><strong>李露 (软件/代码)：</strong> 主代码编写、串口调试、系统集成、文档编写</li>
-                <li><strong>黄新雄 (硬件/电路)：</strong> 杜邦线接线、电路调试、焊接、分压电路</li>
-                <li><strong>李瑛琪 (3D建模)：</strong> Fusion 360 外壳设计、Bambu Lab 打印、组装</li>
-                <li><strong>刘知行 (测试/文档)：</strong> 功能测试、演示准备、物料协调、拍照记录</li>
-                <li><strong>唐宇涵 (组装/调试)：</strong> 外壳组装、热熔胶固定、走线理线、现场演示</li>
+                <li><strong>李露（软件/代码）：</strong>主代码编写、串口调试、系统集成、文档编写</li>
+                <li><strong>黄新雄（硬件/电路）：</strong>杜邦线接线、电路调试、焊接、分压电路</li>
+                <li><strong>李瑛琪（3D建模）：</strong>Fusion 360 外壳设计、Bambu Lab 打印、组装</li>
+                <li><strong>刘知行（测试/文档）：</strong>功能测试、演示准备、物料协调、拍照记录</li>
+                <li><strong>唐宇涵（组装/调试）：</strong>外壳组装、热熔胶固定、走线理线、现场演示</li>
             </ul>
 
-            <h3>具体操作过程 (Design Log)</h3>
-            <p><strong>📍 初期设想与碰壁：</strong> 最初计划制作“智能水杯垫”，使用 HX711 称重模块检测重量变化。但在实测中发现由于结构悬空的微小形变和环境噪声，AD
-                原码疯狂抖动，即便加入滤波算法依然容易误判。
+            <h3>硬件清单</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>组件</th>
+                        <th>型号 / 说明</th>
+                        <th>数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>主控板</td>
+                        <td>ESP32-C3 SuperMini / ESP32-S2 Mini</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>TFT 彩屏</td>
+                        <td>ST7735 1.8寸 SPI 彩屏</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>土壤湿度传感器</td>
+                        <td>阻性土壤湿度传感器，模拟量输出</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>蜂鸣器</td>
+                        <td>有源 / 无源蜂鸣器</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>杜邦线</td>
+                        <td>母对公 / 公对公</td>
+                        <td>若干</td>
+                    </tr>
+                    <tr>
+                        <td>数据线</td>
+                        <td>USB-C / Micro-USB</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>3D 打印外壳</td>
+                        <td>Fusion 360 建模，Bambu Lab 打印</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>引脚分配表</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>元件</th>
+                        <th>引脚</th>
+                        <th>ESP32-C3 对应 GPIO</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ST7735 TFT 彩屏</td>
+                        <td>VCC</td>
+                        <td>5V / VIN</td>
+                        <td>彩屏供电</td>
+                    </tr>
+                    <tr>
+                        <td>ST7735 TFT 彩屏</td>
+                        <td>GND</td>
+                        <td>GND</td>
+                        <td>共地</td>
+                    </tr>
+                    <tr>
+                        <td>ST7735 TFT 彩屏</td>
+                        <td>CS</td>
+                        <td>GPIO 1</td>
+                        <td>片选信号</td>
+                    </tr>
+                    <tr>
+                        <td>ST7735 TFT 彩屏</td>
+                        <td>DC</td>
+                        <td>GPIO 2</td>
+                        <td>数据 / 命令选择</td>
+                    </tr>
+                    <tr>
+                        <td>ST7735 TFT 彩屏</td>
+                        <td>RST</td>
+                        <td>GPIO 3</td>
+                        <td>复位</td>
+                    </tr>
+                    <tr>
+                        <td>ST7735 TFT 彩屏</td>
+                        <td>SCLK</td>
+                        <td>GPIO 6</td>
+                        <td>软件 SPI 时钟</td>
+                    </tr>
+                    <tr>
+                        <td>ST7735 TFT 彩屏</td>
+                        <td>MOSI</td>
+                        <td>GPIO 7</td>
+                        <td>软件 SPI 数据</td>
+                    </tr>
+                    <tr>
+                        <td>土壤湿度传感器</td>
+                        <td>AO</td>
+                        <td>GPIO 0</td>
+                        <td>模拟量输入</td>
+                    </tr>
+                    <tr>
+                        <td>蜂鸣器</td>
+                        <td>+</td>
+                        <td>GPIO 10</td>
+                        <td>报警输出</td>
+                    </tr>
+                    <tr>
+                        <td>蜂鸣器</td>
+                        <td>-</td>
+                        <td>GND</td>
+                        <td>共地</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>接线要点</h3>
+            <ol>
+                <li><strong>直连方式：</strong>所有外设与主控板尽量采用母对公杜邦线直接连接，减少面包板接触不良带来的故障。</li>
+                <li><strong>蜂鸣器防护：</strong>如果使用无源蜂鸣器，需要串联 220Ω 左右限流电阻，避免 GPIO 引脚过流损坏。</li>
+                <li><strong>供电要求：</strong>TFT 彩屏和土壤湿度传感器优先使用 5V / VIN 供电，3.3V 供电时可能出现屏幕异常或传感器读数不稳定。</li>
+                <li><strong>共地规范：</strong>所有模块的 GND 必须与 ESP32 共地，否则容易出现信号漂移、读数紊乱、屏幕异常等问题。</li>
+                <li><strong>SPI 总线：</strong>彩屏的 SCLK、MOSI、CS、DC、RST 必须严格按照代码定义接线，接错会导致屏幕黑屏或初始化失败。</li>
+                <li><strong>传感器布线：</strong>土壤湿度传感器模拟输出线尽量远离蜂鸣器、电源线和高频信号线，以减少电磁干扰。</li>
+            </ol>
+
+            <h3>环境配置步骤</h3>
+            <ol>
+                <li>安装 Arduino IDE 2.x 版本。</li>
+                <li>打开「文件 → 首选项」，填入 ESP32 附加开发板管理器网址。</li>
+                <li>进入「工具 → 开发板 → 开发板管理器」，搜索 <code>esp32</code>，安装 ESP32 Arduino 平台包。</li>
+                <li>在「工具 → 开发板」中选择 <code>ESP32C3 Dev Module</code> 或对应的 ESP32-S2 Mini 开发板。</li>
+                <li>在「工具 → Port」中选择设备对应串口。</li>
+                <li>打开库管理器，安装依赖库：<code>Adafruit ST7735 and ST7789 Library</code>、<code>Adafruit GFX Library</code>、<code>WebServer</code>。
+                </li>
+            </ol>
+
+            <h3>上传代码方法</h3>
+            <p>ESP32-C3 / ESP32-S2 在上传失败或卡在 <code>Connecting...</code> 时，可以手动进入下载模式：</p>
+            <ol>
+                <li>按住开发板上的 <code>BOOT</code> 键。</li>
+                <li>点击 Arduino IDE 的上传按钮。</li>
+                <li>等待出现 <code>Connecting...</code> 或进度条开始移动。</li>
+                <li>松开 <code>BOOT</code> 键，等待代码上传完成。</li>
+            </ol>
+
+            <h3>具体操作过程（Design Log）</h3>
+
+            <p><strong>周六 10:00｜项目启动 &amp; 硬件清点：</strong>
+                团队成员集合后领取 ESP32 主控板、土壤湿度传感器、ST7735
+                彩屏、蜂鸣器、杜邦线等物料。结合家庭绿植缺水提醒的使用场景，确定开发“智能土壤湿度监测系统”，核心功能包括湿度采集、蜂鸣报警、屏幕显示、网页远程控制。
             </p>
-            <p><strong>📍 果断 Pivot 与硬件排雷：</strong> 为保证路演的极高稳定性，果断转向数据更稳定的“阻性土壤湿度传感器”。在接入 1.8 寸 TFT 彩屏时，遭遇严重底层
-                Bug——屏幕微弱闪烁且单片机无限重启。经排查，原因是屏幕的 <code>DC</code> 引脚误接到了 ESP32-C3 的 <code>GPIO 2</code>（Strapping
-                引脚），导致进入错误启动模式。通过强制擦除 Flash 并更换安全引脚，成功救活主板。</p>
-            <p><strong>📍 终极形态确立 (S2 Mini 方案)：</strong> 为了追求更强的算力并彻底解决由于内排针未焊接导致的接线难题，将主控升级为 ESP32-S2
-                Mini，重新规划了“纯外排”接线策略。代码层面，优化了防屏幕闪烁的局部刷新逻辑，并完善了 Web 端远程静音与动态报警阈值设定的功能，最终实现可完美展示的 Release 状态。</p>
+
+            <p><strong>周六 10:30｜分工确认 &amp; 方案细化：</strong>
+                明确软件开发、硬件接线、3D 建模、功能测试、整机组装五大板块。系统逻辑确定为：传感器采集土壤湿度 → 主控处理并换算百分比 → TFT 屏幕实时刷新 → 低于阈值触发蜂鸣器报警 →
+                手机网页查看数据、修改阈值、关闭报警。
+            </p>
+
+            <p><strong>周六 11:20｜踩坑 1：传感器读数固定不变：</strong>
+                完成接线后，土壤湿度传感器数值一直保持固定值，探头接触水或土壤后没有变化。排查 VCC、GND、AO 接线无误后，分别使用 3.3V 与 5V
+                供电测试，问题依旧。最终发现是传感器探头内部线路损坏，更换新传感器后数据恢复正常。
+            </p>
+
+            <p><strong>周六 13:10｜踩坑 2：TFT 彩屏黑屏无法启动：</strong>
+                彩屏接线完成后上电全程黑屏，无任何文字显示。我们先检查 CS、DC、RST、SCLK、MOSI 等 SPI 引脚，再更换库文件和初始化参数，仍然无法解决。后续判断是硬件 SPI 引脚存在兼容性问题，改用软件
+                SPI
+                后屏幕成功点亮。
+            </p>
+
+            <p><strong>周六 14:50｜踩坑 3：湿度数据波动跳变：</strong>
+                传感器放在同一土壤环境中，原始 AD 值频繁跳动，湿度百分比也随之波动，导致蜂鸣器误报警。解决方案是在硬件上增加滤波电容，在代码中加入多次采样平均与防抖逻辑，减少瞬时噪声对判断结果的影响。
+            </p>
+
+            <p><strong>周六 16:40｜踩坑 4：手机无法访问网页端：</strong>
+                ESP32 已经成功连接 WiFi，串口和屏幕也能显示 IP 地址，但手机浏览器无法打开控制网页。排查后发现手机与开发板虽然在同一 WiFi 下，但路由器开启了 AP
+                隔离功能，导致局域网设备之间无法互访。关闭 AP
+                隔离后网页正常访问。
+            </p>
+
+            <p><strong>周六 18:20｜功能联调 &amp; 逻辑优化：</strong>
+                完成硬件与软件联调，重新校准干燥和湿润状态下的 AD 数值，修正湿度百分比换算公式；优化蜂鸣器报警节奏为间断鸣响，降低噪音；网页端增加阈值选择按钮、报警关闭按钮、实时数据展示；TFT
+                屏幕分区展示时间、湿度、状态和 IP
+                地址。
+            </p>
+
+            <p><strong>周六 21:10｜项目收尾 &amp; 文档整理：</strong>
+                对整机进行长时间稳定性测试，确认屏幕显示、网页访问、蜂鸣报警、阈值设置、静音控制均能稳定运行。随后整理接线图、开发过程、问题排查记录和项目展示资料，完成最终路演准备。
+            </p>
 
             <h3>项目实物与调试记录</h3>
             <div class="image-grid">
-                <figure><img src="images/pic32.jpg" alt="土壤湿度传感器模块">
+                <figure>
+                    <img src="images/pic32.jpg" alt="土壤湿度传感器模块">
                     <figcaption>Fig.30 阻性土壤湿度传感器及比较器模块</figcaption>
                 </figure>
-                <figure><img src="images/pic33.jpg" alt="ESP32-S2 Mini主控">
-                    <figcaption>Fig.31 主控切换至 ESP32-S2 Mini (纯外排定义)</figcaption>
+                <figure>
+                    <img src="images/pic33.jpg" alt="ESP32主控">
+                    <figcaption>Fig.31 ESP32 主控板与核心接线测试</figcaption>
                 </figure>
-                <figure><img src="images/pic31.jpg" alt="TFT屏幕驱动调试">
+                <figure>
+                    <img src="images/pic31.jpg" alt="TFT屏幕驱动调试">
                     <figcaption>Fig.32 1.8寸 TFT 彩屏底层驱动调试与连线</figcaption>
                 </figure>
-                <figure><img src="images/pic35.jpg" alt="面包板原型验证">
+                <figure>
+                    <img src="images/pic35.jpg" alt="面包板原型验证">
                     <figcaption>Fig.33 面包板原型验证与复杂走线梳理</figcaption>
                 </figure>
-                <figure><img src="images/pic34.jpg" alt="Bambu Lab 3D打印机">
+                <figure>
+                    <img src="images/pic34.jpg" alt="Bambu Lab 3D打印机">
                     <figcaption>Fig.34 拓竹 A1 mini 进行设备外壳 3D 打印</figcaption>
                 </figure>
-                <figure><img src="images/pic30.png" alt="双端互通展示">
+                <figure>
+                    <img src="images/pic30.png" alt="双端互通展示">
                     <figcaption>Fig.35 Web 端控制台与实物全流程联调演示</figcaption>
                 </figure>
             </div>
@@ -730,9 +925,95 @@ void loop() {
                 </figure>
                 <figure>
                     <img src="images/pic39.jpg" alt="整体运行状态">
-                    <figcaption>Fig.39 湿度探头(湿巾包裹模拟)实测场景及系统侧视角</figcaption>
+                    <figcaption>Fig.39 湿度探头实测场景及系统侧视角</figcaption>
                 </figure>
             </div>
+
+            <h3>涉及知识点</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>类别</th>
+                        <th>知识点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>传感器</td>
+                        <td>土壤湿度传感器模拟量读取、AD 采样、干湿校准、滑动平均滤波、数据稳定性优化</td>
+                    </tr>
+                    <tr>
+                        <td>嵌入式</td>
+                        <td>ESP32 GPIO 配置、ADC 输入、SPI / 软件 SPI 驱动、WiFi 网络连接、NTP 时间同步</td>
+                    </tr>
+                    <tr>
+                        <td>电路</td>
+                        <td>蜂鸣器限流保护、模块供电规范、GND 共地、杜邦线直连与接触不良排查</td>
+                    </tr>
+                    <tr>
+                        <td>编程</td>
+                        <td>状态机逻辑设计、定时刷新、WebServer 网页交互、串口调试与日志输出</td>
+                    </tr>
+                    <tr>
+                        <td>3D 打印</td>
+                        <td>Fusion 360 外壳建模、Bambu Studio 切片、PLA 材料特性与组装公差设计</td>
+                    </tr>
+                    <tr>
+                        <td>工程实践</td>
+                        <td>快速原型迭代、硬件调试排错、团队协作分工、项目文档整理与演示准备</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>常见问题排查</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>问题</th>
+                        <th>可能原因</th>
+                        <th>解决方案</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>上传代码卡在 Connecting...</td>
+                        <td>ESP32 未进入下载模式</td>
+                        <td>按住 BOOT 键 → 点击上传 → 等待连接 → 松开 BOOT</td>
+                    </tr>
+                    <tr>
+                        <td>串口乱码</td>
+                        <td>波特率不匹配</td>
+                        <td>串口监视器波特率设为 115200</td>
+                    </tr>
+                    <tr>
+                        <td>湿度数据跳动严重</td>
+                        <td>电磁干扰、接线接触不良、模拟信号不稳定</td>
+                        <td>增加滤波电容、代码多次采样取平均、重新固定接线</td>
+                    </tr>
+                    <tr>
+                        <td>TFT 彩屏黑屏</td>
+                        <img src="images/pic31.jpg" alt="TFT 彩屏黑屏调试记录"
+                            style="width:260px; margin-top:10px; border-radius:8px;">
+                        <td>SPI 引脚接错、供电不足、库配置错误</td>
+                        <td>核对 CS/DC/RST/SCK/MOSI，改用 5V 供电，检查初始化参数</td>
+                    </tr>
+                    <tr>
+                        <td>蜂鸣器不响</td>
+                        <td>接线反接、限流电阻过大、GPIO 定义错误</td>
+                        <td>检查极性，核对代码引脚，必要时降低限流电阻</td>
+                    </tr>
+                    <tr>
+                        <td>网页无法访问</td>
+                        <td>WiFi 连接失败、手机不在同一局域网、路由器开启 AP 隔离</td>
+                        <td>检查 WiFi 账号密码，关闭 AP 隔离，或改用手机热点测试</td>
+                    </tr>
+                    <tr>
+                        <td>外壳无法组装</td>
+                        <td>3D 建模尺寸偏差或公差不足</td>
+                        <td>重新测量实物尺寸，每边预留约 1mm 装配余量</td>
+                    </tr>
+                </tbody>
+            </table>
 
             <h3>系统核心源代码</h3>
             <pre><code class="language-cpp">#include &lt;Arduino.h&gt;
@@ -741,119 +1022,118 @@ void loop() {
 #include &lt;Adafruit_GFX.h&gt;
 #include &lt;Adafruit_ST7735.h&gt;
 #include &lt;SPI.h&gt;
-#include "time.h"
+#include &lt;time.h&gt;
 
-// ================= 引脚定义 (专为 S2 Mini 外排针脚纯手工定制!) =================
-#define TFT_CS     16   // 左侧外排
-#define TFT_DC     18   // 左侧外排
-#define TFT_RST    33   // 左侧外排
-#define TFT_SCLK   35   // 左侧外排
-#define TFT_MOSI   37   // 左侧外排
-
-#define SOIL_PIN   4    // 右侧外排 (ADC)
-#define BEEP_PIN   6    // 右侧外排
+// 引脚定义
+#define TFT_CS     1
+#define TFT_DC     2
+#define TFT_RST    3
+#define TFT_SCLK   6
+#define TFT_MOSI   7
+#define SOIL_PIN   0
+#define BEEP_PIN   10
 #define BEEP_ON    HIGH
 #define BEEP_OFF   LOW
 
-// ================= WiFi 配置 =================
-const char* ssid = "Titanic"; 
-const char* password = "20060426"; 
+// WiFi 配置信息
+const char* ssid = "Titanic";
+const char* password = "20060426";
 
+// 网络时间配置
 const char* ntpServer = "ntp.aliyun.com";
-const long  gmtOffset_sec = 8 * 3600; 
+const long  gmtOffset_sec = 8 * 3600;
 const int   daylightOffset_sec = 0;
 
-// ================= 对象实例化 (使用软件 SPI 随意定脚) =================
+// 硬件实例创建
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 WebServer server(80);
 
-// ================= ⚖️ 传感器校准参数 =================
-int dryValue = 4095;  // 探头拿在空气中、擦干时的 AD 数值
-int wetValue = 1500;  // 探头完全泡在水里的 AD 数值
+// 湿度校准参数
+int dryValue = 4095;
+int wetValue = 1500;
 
-// ================= 全局变量 =================
-int currentMoisture = 0;   
-int rawAnalogValue = 0;    
-int alarmThreshold = 30;   
-bool isMuted = false;      
+// 全局变量
+int currentMoisture = 0;
+int rawAnalogValue = 0;
+int alarmThreshold = 30;
+bool isMuted = false;
+char currentTimeStr[20] = "同步中...";
+unsigned long lastScreenUpdate = 0;
 
-char currentTimeStr[20] = "Syncing...";
-unsigned long lastScreenUpdate = 0; 
-
-// ================= 网页前端代码 =================
+// 网页页面生成
 String HtmlPage() {
   String html = "&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;";
-  html += "&lt;meta name='viewport' content='width=device-width, initial-scale=1.0'&gt;";
-  html += "&lt;meta http-equiv='refresh' content='3'&gt;"; 
-  html += "&lt;title&gt;植物卫士 IoT 控制台&lt;/title&gt;";
-  <!-- html += "&lt;style&gt;body{text-align:center;font-family:'Segoe UI',sans-serif;background:#e8f5e9;} button{padding:12px 20px;font-size:16px;border:none;border-radius:8px;background:#4caf50;color:white;margin:5px;cursor:pointer;box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: 0.2s;} button:hover{opacity: 0.9;} .danger{background:#f44336;} .card{background:white;padding:30px;border-radius:15px;margin:20px auto;max-width:500px;box-shadow:0 10px 20px rgba(0,0,0,0.1);}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;"; -->
-// ================= 网页前端代码 =================
-String HtmlPage() {
-String html = "
-<!DOCTYPE html>
-<html>
+  html += "&lt;meta name='viewport' content='width=device-width,initial-scale=1.0'&gt;";
+  html += "&lt;meta http-equiv='refresh' content='3'&gt;";
+  html += "&lt;title&gt;土壤湿度监测系统&lt;/title&gt;";
+  html += "&lt;style&gt;";
+  html += "body{text-align:center;background:#e8f5e9;font-family:'Segoe UI',Arial,sans-serif;}";
+  html += "button{padding:12px 20px;font-size:16px;border:none;border-radius:8px;background:#4caf50;color:white;margin:5px;cursor:pointer;}";
+  html += ".danger{background:#f44336;}";
+  html += ".card{background:white;padding:30px;border-radius:15px;margin:20px auto;max-width:500px;box-shadow:0 10px 20px rgba(0,0,0,0.1);}";
+  html += "&lt;/style&gt;&lt;/head&gt;&lt;body&gt;";
 
-<head>
-    <meta charset='UTF-8'>";
-    html += "
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>";
-    html += "
-    <!-- <meta http-equiv='refresh' content='3'>"; -->
-    html += "<title>植物卫士 IoT 控制台</title>";
-
-    // 👇 把复制好的这段直接粘贴在这里 👇
-    html += "<style>
-        "
- "body{text-align:center;font-family:'Segoe UI',sans-serif;background:#e8f5e9;} "
-        "button{padding:12px 20px;font-size:16px;border:none;border-radius:8px;"
-        "background:#4caf50;color:white;margin:5px;cursor:pointer;"
-        "box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: 0.2s;} "
-        "button:hover{opacity: 0.9;} "
-        ".danger{background:#f44336;} "
-        ".card{background:white;padding:30px;border-radius:15px;margin:20px auto;"
-        "max-width:500px;box-shadow:0 10px 20px rgba(0,0,0,0.1);}"
-        "
-    </style>
-</head>
-
-<body>";
-    // 👆 粘贴到这里结束 👆
-
-    html += "<h2 style='color:#2e7d32;'>🌱 智能植物卫士 IoT 控制台</h2>
-    <div class='card'>";
-        html += "<p style='font-size:18px; color:#555;'>北京时间: <b>" + String(currentTimeStr) + "</b></p>
-        <hr style='border:0; border-top:1px solid #eee; margin:20px 0;'>";
-        // ... 下面的代码保持原样不变 ...
-        }
-  html += "&lt;h2 style='color:#2e7d32;'&gt;🌱 智能植物卫士 IoT 控制台&lt;/h2&gt;&lt;div class='card'&gt;";
-  html += "&lt;p style='font-size:18px; color:#555;'&gt;北京时间: &lt;b&gt;" + String(currentTimeStr) + "&lt;/b&gt;&lt;/p&gt;&lt;hr style='border:0; border-top:1px solid #eee; margin:20px 0;'&gt;";
+  html += "&lt;h2 style='color:#2e7d32;'&gt;智能土壤湿度监测系统&lt;/h2&gt;";
+  html += "&lt;div class='card'&gt;";
+  html += "&lt;p style='font-size:18px;'&gt;当前时间：&lt;b&gt;" + String(currentTimeStr) + "&lt;/b&gt;&lt;/p&gt;";
+  html += "&lt;hr style='border:0;border-top:1px solid #eee;margin:20px 0;'&gt;";
   html += "&lt;p&gt;实时土壤湿度&lt;/p&gt;";
+
   String color = currentMoisture &lt; alarmThreshold ? "#f44336" : "#2e7d32";
   html += "&lt;h1 style='color:" + color + ";font-size:72px;margin:10px 0;'&gt;" + String(currentMoisture) + "%&lt;/h1&gt;";
+
   if (currentMoisture &lt; alarmThreshold) {
-    html += "&lt;p style='font-size:20px;'&gt;状态：&lt;b&gt;⚠️ 极度缺水，请立即浇水！&lt;/b&gt;&lt;/p&gt;";
-    if (isMuted) html += "&lt;p style='color:#f44336;'&gt;(警报已被手动静音)&lt;/p&gt;";
-    else html += "&lt;p style='color:#f44336; animation: blink 1s infinite;'&gt;(🚨 正在鸣笛报警 🚨)&lt;/p&gt;";
+    html += "&lt;p style='font-size:20px;'&gt;状态：缺水，请及时浇水&lt;/p&gt;";
+    if (isMuted) html += "&lt;p style='color:#f44336;'&gt;报警已手动关闭&lt;/p&gt;";
+    else html += "&lt;p style='color:#f44336;'&gt;蜂鸣器正在报警&lt;/p&gt;";
   } else {
-    html += "&lt;p style='font-size:20px;'&gt;状态：&lt;b&gt;✅ 湿度完美，植物很健康&lt;/b&gt;&lt;/p&gt;";
+    html += "&lt;p style='font-size:20px;'&gt;状态：湿度正常，植物水分充足&lt;/p&gt;";
   }
-  html += "&lt;p style='color:#999;font-size:12px;margin-top:20px;'&gt;当前报警线: 低于 " + String(alarmThreshold) + "% | 探头AD原始数值: " + String(rawAnalogValue) + "&lt;/p&gt;&lt;/div&gt;";
+
+  html += "&lt;p style='color:#999;font-size:12px;'&gt;报警阈值：" + String(alarmThreshold) + "% | 原始AD值：" + String(rawAnalogValue) + "&lt;/p&gt;";
+  html += "&lt;/div&gt;";
+
   if (currentMoisture &lt; alarmThreshold &amp;&amp; !isMuted) {
-    html += "&lt;a href='/mute'&gt;&lt;button class='danger'&gt;🔕 强制关闭蜂鸣器报警&lt;/button&gt;&lt;/a&gt;&lt;br&gt;&lt;br&gt;";
+    html += "&lt;a href='/mute'&gt;&lt;button class='danger'&gt;关闭报警&lt;/button&gt;&lt;/a&gt;&lt;br&gt;&lt;br&gt;";
   }
-  html += "&lt;a href='/set20'&gt;&lt;button&gt;设为缺水线: 20%&lt;/button&gt;&lt;/a&gt;&lt;a href='/set30'&gt;&lt;button&gt;设为缺水线: 30%&lt;/button&gt;&lt;/a&gt;&lt;a href='/set50'&gt;&lt;button&gt;设为缺水线: 50%&lt;/button&gt;&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;";
+
+  html += "&lt;a href='/set20'&gt;&lt;button&gt;设置阈值 20%&lt;/button&gt;&lt;/a&gt;";
+  html += "&lt;a href='/set30'&gt;&lt;button&gt;设置阈值 30%&lt;/button&gt;&lt;/a&gt;";
+  html += "&lt;a href='/set50'&gt;&lt;button&gt;设置阈值 50%&lt;/button&gt;&lt;/a&gt;";
+  html += "&lt;/body&gt;&lt;/html&gt;";
+
   return html;
 }
 
-// ================= Web服务器路由 =================
+// 网页路由服务
 void WebService() {
-  server.on("/", []() { server.send(200, "text/html", HtmlPage()); });
-  server.on("/mute", []() { isMuted = true; digitalWrite(BEEP_PIN, BEEP_OFF); server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;已静音，正在返回...&lt;/p&gt;"); });
-  server.on("/set20", []() { alarmThreshold = 20; server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;设置成功&lt;/p&gt;"); });
-  server.on("/set30", []() { alarmThreshold = 30; server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;设置成功&lt;/p&gt;"); });
-  server.on("/set50", []() { alarmThreshold = 50; server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;设置成功&lt;/p&gt;"); });
+  server.on("/", []() {
+    server.send(200, "text/html", HtmlPage());
+  });
+
+  server.on("/mute", []() {
+    isMuted = true;
+    digitalWrite(BEEP_PIN, BEEP_OFF);
+    server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;报警已关闭，正在跳转...&lt;/p&gt;");
+  });
+
+  server.on("/set20", []() {
+    alarmThreshold = 20;
+    server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;阈值设置成功&lt;/p&gt;");
+  });
+
+  server.on("/set30", []() {
+    alarmThreshold = 30;
+    server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;阈值设置成功&lt;/p&gt;");
+  });
+
+  server.on("/set50", []() {
+    alarmThreshold = 50;
+    server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;阈值设置成功&lt;/p&gt;");
+  });
 }
 
+// 更新时间
 void updateLocalTime() {
   struct tm timeinfo;
   if (!getLocalTime(&amp;timeinfo)) return;
@@ -862,30 +1142,25 @@ void updateLocalTime() {
 
 void setup() {
   Serial.begin(115200);
-  delay(100); 
+  delay(100);
 
-  // ⚡️ S2 特有保护：强制将模拟量分辨率设为 12 位 (0-4095)，以匹配你之前的干湿校准值！
-  analogReadResolution(12);
-  
   pinMode(BEEP_PIN, OUTPUT);
   digitalWrite(BEEP_PIN, BEEP_OFF);
 
-  // 屏幕初始化 (如果花屏依然可以换成 INITR_GREENTAB)
-  tft.initR(INITR_BLACKTAB); 
+  tft.initR(INITR_BLACKTAB);
   tft.setRotation(1);
   tft.fillScreen(ST77XX_BLACK);
-  
   tft.setTextColor(ST77XX_GREEN);
   tft.setTextSize(2);
   tft.setCursor(15, 30);
   tft.print("Plant Guard");
-  
+
   WiFi.begin(ssid, password);
   tft.setTextColor(ST77XX_WHITE);
   tft.setTextSize(1);
   tft.setCursor(15, 60);
   tft.print("Connecting WiFi...");
-  
+
   int retry = 0;
   while (WiFi.status() != WL_CONNECTED &amp;&amp; retry &lt; 20) {
     delay(500);
@@ -894,20 +1169,26 @@ void setup() {
 
   tft.fillScreen(ST77XX_BLACK);
   if (WiFi.status() == WL_CONNECTED) {
-    tft.setCursor(5, 20); tft.print("WiFi Connected!");
-    tft.setCursor(5, 40); tft.print("IP: "); tft.print(WiFi.localIP());
+    tft.setCursor(5, 20);
+    tft.print("WiFi Connected!");
+    tft.setCursor(5, 40);
+    tft.print("IP: ");
+    tft.print(WiFi.localIP());
     configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-    Serial.println(WiFi.localIP());
   } else {
     tft.setTextColor(ST77XX_RED);
-    tft.setCursor(5, 20); tft.print("WiFi Failed!");
-    tft.setCursor(5, 40); tft.print("Offline Mode");
+    tft.setCursor(5, 20);
+    tft.print("WiFi Failed!");
+    tft.setCursor(5, 40);
+    tft.print("Offline Mode");
   }
+
   delay(2000);
-  tft.fillScreen(ST77XX_BLACK); 
+  tft.fillScreen(ST77XX_BLACK);
 
   WebService();
   server.begin();
+  Serial.println("====== System Ready ======");
 }
 
 void loop() {
@@ -916,13 +1197,14 @@ void loop() {
 
   rawAnalogValue = analogRead(SOIL_PIN);
   currentMoisture = map(rawAnalogValue, dryValue, wetValue, 0, 100);
-  currentMoisture = constrain(currentMoisture, 0, 100); 
+  currentMoisture = constrain(currentMoisture, 0, 100);
 
   if (currentMoisture &gt;= alarmThreshold) {
     isMuted = false;
   }
 
   bool shouldAlarm = (currentMoisture &lt; alarmThreshold) &amp;&amp; !isMuted;
+
   if (shouldAlarm) {
     if ((millis() / 300) % 2 == 0) digitalWrite(BEEP_PIN, BEEP_ON);
     else digitalWrite(BEEP_PIN, BEEP_OFF);
@@ -933,15 +1215,17 @@ void loop() {
   if (millis() - lastScreenUpdate &gt; 500) {
     lastScreenUpdate = millis();
 
-    // 屏幕防闪烁优化绘制
+    Serial.printf("[%s] 湿度: %d%% | 原始AD: %d | 报警阈值: %d%%\n",
+                  currentTimeStr, currentMoisture, rawAnalogValue, alarmThreshold);
+
     tft.fillRect(0, 0, 160, 20, ST77XX_BLUE);
-    tft.setTextColor(ST77XX_WHITE); 
+    tft.setTextColor(ST77XX_WHITE);
     tft.setTextSize(1);
     tft.setCursor(5, 6);
     tft.print("Time: ");
     tft.print(currentTimeStr);
 
-    tft.fillRect(0, 30, 160, 20, ST77XX_BLACK); 
+    tft.fillRect(0, 30, 160, 20, ST77XX_BLACK);
     if (currentMoisture &lt; alarmThreshold) {
       tft.setTextColor(ST77XX_RED);
       tft.setTextSize(2);
@@ -953,15 +1237,16 @@ void loop() {
       tft.setCursor(20, 35);
       tft.print("Moisture Level:");
     }
-    
+
     char moistureStr[10];
-    sprintf(moistureStr, "%-3d%%", currentMoisture); 
-    
+    sprintf(moistureStr, "%-3d%%", currentMoisture);
+
     if (currentMoisture &lt; alarmThreshold) {
-        tft.setTextColor(ST77XX_RED, ST77XX_BLACK);
+      tft.setTextColor(ST77XX_RED, ST77XX_BLACK);
     } else {
-        tft.setTextColor(ST77XX_GREEN, ST77XX_BLACK);
+      tft.setTextColor(ST77XX_GREEN, ST77XX_BLACK);
     }
+
     tft.setTextSize(4);
     tft.setCursor(40, 60);
     tft.print(moistureStr);
@@ -970,19 +1255,44 @@ void loop() {
     tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK);
     tft.setCursor(5, 100);
     tft.print("IP: ");
-    tft.print(WiFi.localIP().toString() + "    "); 
-    
+    tft.print(WiFi.localIP().toString() + "    ");
+
     tft.setCursor(5, 115);
     tft.print("WiFi Web Control Ready");
   }
 }</code></pre>
 
-            <h3>项目总结</h3>
+            <h3>项目总结与反思</h3>
             <p>
                 本次期末创新项目完整经历了“需求分析 — 原型搭建 — 代码开发 — 硬件调试 — 外壳设计 — 功能演示”的流程。
                 相比前期单独的传感器或 Web Server 实验，本项目将模拟输入、数字输出、WiFi 通信、网页前端、TFT 显示和报警逻辑整合到一个完整系统中。
-                最终作品不仅实现了精准的实时监测、网页远控和极速警报，也通过 3D 打印赋予了硬件以完整的工业级视觉形态，具备了极强的实用价值和路演展示效果。
+                最终作品不仅实现了实时监测、网页远控和蜂鸣报警，也通过 3D 打印外壳提升了作品完整度和展示效果。
             </p>
+
+            <h4>做得好的地方</h4>
+            <ul>
+                <li>两天内完成方案设计、硬件接线、代码开发、3D 打印、功能联调和路演准备，整体推进效率较高。</li>
+                <li>团队分工明确，软件、硬件、建模、测试、组装各部分都有对应负责人。</li>
+                <li>踩坑记录较完整，传感器损坏、屏幕黑屏、数据跳变、网页访问失败等问题均形成了可复用的排错经验。</li>
+            </ul>
+
+            <h4>可改进的地方</h4>
+            <ul>
+                <li>引脚规划应更早完成，提前查阅 ESP32-C3 / ESP32-S2 的特殊启动引脚，避免临时更换接线。</li>
+                <li>关键元件需要准备冗余备件，例如蜂鸣器、传感器和彩屏，防止硬件损坏拖慢进度。</li>
+                <li>外壳建模前应先精确测量所有元件尺寸，并预留装配公差，减少返工。</li>
+                <li>3D 打印任务可以提前排队和切片，减少等待时间。</li>
+            </ul>
+
+            <h4>未来扩展方向</h4>
+            <ul>
+                <li>增加 OLED / 更大尺寸屏幕，显示湿度、环境温湿度、设备运行时长和报警阈值。</li>
+                <li>优化提醒机制，根据缺水程度动态调整蜂鸣器频率，并加入状态指示灯。</li>
+                <li>增加蓝牙或 APP 功能，保存历史湿度数据并生成植物养护统计报表。</li>
+                <li>升级为锂电池供电，摆脱 USB 线限制，提高摆放灵活性。</li>
+                <li>增加自动浇灌模块，外接水泵与电磁阀，实现缺水自动浇水。</li>
+                <li>拓展环境监测，加入温湿度、光照等传感器，构建更完整的植物养护系统。</li>
+            </ul>
         </section>
 
 

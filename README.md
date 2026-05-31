@@ -62,19 +62,54 @@
 
 ## 10 | 期末创新项目：智能植物卫士 IoT 控制台
 
-- 项目名称： 智能植物卫士 IoT 控制台
-- 项目类型： 物联网监测 / 嵌入式开发 / 智能植物养护
-- 核心主控： ESP32-S2 Mini
-- 技术栈： Arduino C++、WiFi WebServer、TFT 屏幕显示、ADC 模拟量采集、NTP 网络时间同步
+### 项目基本信息
+
+- **项目名称：** 智能土壤湿度监测系统 / 智能植物卫士 IoT 控制台
+- **项目类型：** 物联网监测 / 嵌入式开发 / 智能植物养护
+- **核心主控：** ESP32-S2 Mini，前期原型测试使用 ESP32-C3 SuperMini
+- **技术栈：** Arduino C++、WiFi WebServer、TFT 屏幕显示、ADC 模拟量采集、NTP 网络时间同步
+- **课程名称：** 《从代码到实物：造你所想》
+- **项目阶段：** 期末 Hackathon 创新项目
+
+---
 
 ### 项目简介
 
-本项目基于 ESP32-S2 Mini 主控板，结合土壤湿度传感器、TFT 彩屏、蜂鸣器与 WiFi Web Server，
-实现了一个能够实时检测土壤湿度、网页远程查看、缺水报警、报警阈值设置以及本地屏幕显示的智能植物养护系统。
+本项目基于 ESP32 开发板，结合土壤湿度传感器、TFT 彩屏、蜂鸣器与 WiFi Web Server，实现了一个能够实时检测土壤湿度、网页远程查看、缺水报警、报警阈值设置以及本地屏幕显示的智能植物养护系统。
 
-系统会将土壤湿度传感器采集到的模拟量转换为 0%~100% 的湿度百分比，并同时显示在本地 TFT 屏幕和网页控制台中。
-当湿度低于设定阈值时，蜂鸣器会自动间歇报警，网页端也会显示红色缺水警告。用户还可以通过网页按钮切换报警线，
-或在报警时手动关闭蜂鸣器。
+系统会将土壤湿度传感器采集到的模拟量转换为 `0% ~ 100%` 的湿度百分比，并同时显示在本地 TFT 屏幕和网页控制台中。
+
+当湿度低于设定阈值时，蜂鸣器会自动间歇报警，网页端也会显示红色缺水警告。用户还可以通过网页按钮切换报警线，或在报警时手动关闭蜂鸣器。
+
+一句话定义：
+
+> 基于 ESP32 的智能土壤湿度监测设备，通过土壤湿度传感器采集数据，湿度偏低时蜂鸣器报警，TFT 彩屏实时展示数值与设备状态，并搭配手机网页实现远程查看、参数设置与报警关闭。
+
+---
+
+### 应用场景
+
+- 家庭绿植养护
+- 阳台盆栽管理
+- 校园植物实训
+- 室内园艺照料
+- 小型农田或温室简易监测
+- 长期外出时的植物缺水提醒
+
+---
+
+### 产品亮点
+
+- **硬件搭建简单：** 使用 ESP32、土壤湿度传感器、蜂鸣器、TFT 彩屏即可完成核心功能。
+- **数据采集直观：** 将 ADC 原始值转换为湿度百分比，便于用户理解。
+- **双端实时显示：** 本地 TFT 屏幕与手机网页端同步显示湿度与设备状态。
+- **支持远程操控：** 通过局域网网页查看湿度、设置阈值、关闭报警。
+- **阈值可调节：** 支持 20%、30%、50% 三档报警阈值切换。
+- **声光提醒及时：** 湿度低于阈值时自动触发蜂鸣器间歇报警。
+- **低成本易复刻：** 使用教学物资即可完成，无需额外购买复杂模块。
+- **外壳完整度高：** 结合 Fusion 360 建模与 Bambu Lab 3D 打印，使作品具备完整产品形态。
+
+---
 
 ### 团队分工
 
@@ -86,281 +121,443 @@
 | 刘知行 | 测试/文档 | 功能测试、演示准备、物料协调、拍照记录    |
 | 唐宇涵 | 组装/调试 | 外壳组装、热熔胶固定、走线理线、现场演示  |
 
+---
+
 ### 硬件组成
 
-- ESP32-S2 Mini 主控板：负责 WiFi 通信、传感器读取、网页服务和屏幕驱动。
-- 土壤湿度传感器：用于检测土壤含水量，并输出模拟电压信号。
-- TFT 彩屏：用于本地显示时间、湿度、IP 地址和植物状态。
-- 蜂鸣器：当湿度低于报警阈值时进行声音提醒。
-- 面包板与杜邦线：用于快速搭建和调试原型电路。
-- 3D 打印外壳：用于固定主控板、屏幕与传感器模块，提高作品完整度。
+| 组件           | 型号 / 说明                        | 数量 |
+| -------------- | ---------------------------------- | ---- |
+| 主控板         | ESP32-S2 Mini / ESP32-C3 SuperMini | 1    |
+| TFT 彩屏       | ST7735 1.8 寸 SPI 彩屏             | 1    |
+| 土壤湿度传感器 | 阻性土壤湿度传感器，模拟量输出     | 1    |
+| 蜂鸣器         | 有源 / 无源蜂鸣器                  | 1    |
+| 杜邦线         | 母对公 / 公对公                    | 若干 |
+| 面包板         | 原型测试使用                       | 1    |
+| 数据线         | USB-C / Micro-USB                  | 1    |
+| 3D 打印外壳    | Fusion 360 建模，Bambu Lab 打印    | 1    |
 
-### 研发纪要
+---
 
-1. 传感器校准  
-   首先将土壤湿度传感器分别置于空气中和水中，通过串口读取干燥值与湿润值。
-   最终设置 `dryValue = 4095`，`wetValue = 1500`，再使用 `map()` 将 ADC 原始值映射为湿度百分比。
+### 引脚分配
 
-2. TFT 屏幕调试  
-   屏幕采用 ST7735 驱动库，通过软件 SPI 自定义引脚连接。
-   调试过程中解决了屏幕初始化、显示方向、刷新闪烁等问题，并使用局部刷新方式减少画面闪烁。
+#### ESP32-S2 Mini 最终版本引脚
 
-3. Web 控制台开发  
-   使用 `WebServer.h` 搭建局域网网页服务。网页端能够显示北京时间、实时湿度、报警状态、报警阈值和 ADC 原始值。
-   同时提供 20%、30%、50% 三档报警线切换按钮，以及蜂鸣器静音按钮。
+| 模块 / 元件     | 引脚 | ESP32-S2 Mini GPIO | 说明            |
+| --------------- | ---- | ------------------ | --------------- |
+| ST7735 TFT 彩屏 | VCC  | 5V / VIN           | 彩屏供电        |
+| ST7735 TFT 彩屏 | GND  | GND                | 共地            |
+| ST7735 TFT 彩屏 | CS   | GPIO 16            | SPI 片选        |
+| ST7735 TFT 彩屏 | DC   | GPIO 18            | 数据 / 命令选择 |
+| ST7735 TFT 彩屏 | RST  | GPIO 33            | 屏幕复位        |
+| ST7735 TFT 彩屏 | SCLK | GPIO 35            | 软件 SPI 时钟   |
+| ST7735 TFT 彩屏 | MOSI | GPIO 37            | 软件 SPI 数据   |
+| 土壤湿度传感器  | AO   | GPIO 4             | ADC 模拟量输入  |
+| 土壤湿度传感器  | VCC  | 5V / VIN           | 传感器供电      |
+| 土壤湿度传感器  | GND  | GND                | 共地            |
+| 蜂鸣器          | +    | GPIO 6             | 报警输出        |
+| 蜂鸣器          | -    | GND                | 共地            |
 
-4. 缺水报警逻辑  
-   当湿度低于报警线且未静音时，蜂鸣器会以 300ms 为周期间歇鸣叫。
-   为了避免网页服务阻塞，报警逻辑没有使用 `delay()`，而是基于 `millis()` 实现非阻塞控制。
+#### ESP32-C3 前期原型测试引脚
 
-5. 网络时间同步  
-   设备连接 WiFi 后，通过阿里云 NTP 服务器同步北京时间，并在网页端和 TFT 屏幕上实时显示。
+| 模块 / 元件     | 引脚 | ESP32-C3 GPIO | 说明            |
+| --------------- | ---- | ------------- | --------------- |
+| ST7735 TFT 彩屏 | CS   | GPIO 1        | SPI 片选        |
+| ST7735 TFT 彩屏 | DC   | GPIO 2        | 数据 / 命令选择 |
+| ST7735 TFT 彩屏 | RST  | GPIO 3        | 屏幕复位        |
+| ST7735 TFT 彩屏 | SCLK | GPIO 6        | 软件 SPI 时钟   |
+| ST7735 TFT 彩屏 | MOSI | GPIO 7        | 软件 SPI 数据   |
+| 土壤湿度传感器  | AO   | GPIO 0        | ADC 模拟量输入  |
+| 蜂鸣器          | +    | GPIO 10       | 报警输出        |
+| 蜂鸣器          | -    | GND           | 共地            |
 
-6. 最终集成  
-   完成面包板原型后，对传感器、屏幕、蜂鸣器和主控板进行整体接线整理，并结合 3D 打印外壳完成结构固定与现场演示。
+---
+
+### 接线要点
+
+1. **直连方式：**
+   所有外设与主控板尽量采用母对公杜邦线直接连接，减少面包板接触不良导致的故障。
+
+2. **蜂鸣器防护：**
+   如果使用无源蜂鸣器，建议串联约 `220Ω` 限流电阻，防止 GPIO 引脚因过流损坏。
+
+3. **供电要求：**
+   TFT 彩屏和土壤湿度传感器优先接入 `5V / VIN`，如果使用 `3.3V` 供电，可能出现彩屏亮度不足、传感器读数不稳定等问题。
+
+4. **共地规范：**
+   所有模块的 `GND` 必须与 ESP32 共地，否则会出现信号漂移、传感器读数异常或屏幕无法正常显示。
+
+5. **SPI 总线要求：**
+   彩屏的 `CS`、`DC`、`RST`、`SCLK`、`MOSI` 必须严格按照代码中的引脚定义连接。接错会导致屏幕黑屏、花屏或初始化失败。
+
+6. **传感器布线：**
+   土壤湿度传感器的模拟输出线应尽量远离蜂鸣器、电源线和高频信号线，减少电磁干扰。
+
+---
+
+### 环境配置步骤
+
+1. 安装 Arduino IDE 2.x 版本。
+2. 打开 `文件 → 首选项`，填入 ESP32 附加开发板管理器网址。
+3. 进入 `工具 → 开发板 → 开发板管理器`，搜索 `esp32`，安装 ESP32 Arduino 平台包。
+4. 在 `工具 → 开发板` 中选择对应开发板：
+   - ESP32-C3 Dev Module
+   - ESP32-S2 Mini
+5. 在 `工具 → Port` 中选择设备对应串口。
+6. 打开库管理器，安装以下依赖库：
+   - `Adafruit GFX Library`
+   - `Adafruit ST7735 and ST7789 Library`
+   - `WebServer`
+   - `WiFi`
+   - `SPI`
+
+---
+
+### 上传代码方法
+
+当 ESP32 上传代码卡在 `Connecting...` 时，可以手动进入下载模式：
+
+1. 按住开发板上的 `BOOT` 键。
+2. 点击 Arduino IDE 的上传按钮。
+3. 等待出现 `Connecting...` 或进度条开始移动。
+4. 松开 `BOOT` 键。
+5. 等待代码上传完成。
+6. 如果仍然失败，可以尝试重新插拔数据线、更换 USB 口或检查串口驱动。
+
+---
+
+### 系统运行逻辑
+
+```text
+土壤湿度传感器采集模拟量
+        ↓
+ESP32 读取 ADC 原始值
+        ↓
+根据干湿标定值换算为湿度百分比
+        ↓
+TFT 彩屏实时显示时间、湿度、状态、IP
+        ↓
+Web 控制台同步显示湿度与报警信息
+        ↓
+若湿度低于阈值且未静音
+        ↓
+蜂鸣器间歇报警
+        ↓
+用户可在网页端修改阈值或关闭报警
+```
+
+
+
+### 开发日志与踩坑记录
+
+#### 周六 10:00 | 项目启动 & 硬件清点
+
+团队成员集合后领取 ESP32 主控板、土壤湿度传感器、ST7735 彩屏、蜂鸣器、杜邦线等硬件物料。结合实际使用场景，确定开发“智能土壤湿度监测系统”，用于解决绿植缺水提醒问题。
+
+项目核心功能确定为：
+
+- 土壤湿度实时采集
+- TFT 彩屏本地显示
+- 湿度过低蜂鸣报警
+- 手机网页远程查看
+- 网页端修改报警阈值
+- 网页端关闭蜂鸣器报警
+
+---
+
+#### 周六 10:30 | 分工确认 & 方案细化
+
+团队明确分为软件开发、硬件接线、3D 建模、功能测试、整机组装五个方向。
+
+最终系统逻辑确定为：
+
+> 传感器采集土壤湿度 → 主控处理数据 → 屏幕实时刷新状态 → 低于阈值触发蜂鸣器报警 → 手机网页远程查看数据、修改报警阈值、关闭报警。
+
+---
+
+#### 周六 11:20 | 踩坑 1：传感器读数固定不变
+
+完成初步接线后，土壤湿度传感器数值始终保持固定值。无论探头放在空气中、湿巾中还是水中，串口输出都没有明显变化。
+
+排查过程：
+
+- 核对传感器 `VCC`、`GND`、`AO` 接线，确认没有错接。
+- 分别使用 `3.3V` 和 `5V` 供电测试。
+- 更换 ADC 引脚重新读取。
+- 最终发现传感器探头内部线路损坏。
+
+解决方法：
+
+> 更换新的土壤湿度传感器后，ADC 数值能够随湿度变化正常波动。
+
+---
+
+#### 周六 13:10 | 踩坑 2：TFT 彩屏黑屏无法启动
+
+接入 1.8 寸 TFT 彩屏后，上电全程黑屏，没有任何文字或图像显示。
+
+排查过程：
+
+- 核对 `CS`、`DC`、`RST`、`SCLK`、`MOSI` 接线。
+- 更换 ST7735 初始化参数，例如 `INITR_BLACKTAB`、`INITR_GREENTAB`。
+- 检查供电电压，改用 `5V / VIN` 供电。
+- 尝试更换库文件。
+- 最终判断硬件 SPI 引脚存在兼容性问题，改用软件 SPI 后屏幕成功点亮。
+
+![TFT 彩屏黑屏调试记录](images/pic31.jpg)
+
+解决方法：
+
+> 使用软件 SPI 自定义引脚驱动 TFT 彩屏，避开硬件 SPI 引脚冲突问题。
+
+---
+
+#### 周六 14:50 | 踩坑 3：湿度数据波动跳变
+
+传感器放在同一环境中时，原始 ADC 数值仍然会频繁跳动，导致湿度百分比不稳定，蜂鸣器容易误报警。
+
+解决方法：
+
+- 增加多次采样平均算法。
+- 使用 `constrain()` 限制湿度百分比范围。
+- 在报警逻辑中避免单次突变立即触发。
+- 尽量缩短模拟信号线，并远离蜂鸣器和电源线。
+- 必要时可在模拟输出端增加滤波电容。
+
+---
+
+#### 周六 16:40 | 踩坑 4：手机无法访问网页端
+
+ESP32 成功连接 WiFi，串口和屏幕均能显示 IP 地址，但手机浏览器无法打开控制页面。
+
+排查过程：
+
+- 确认手机和 ESP32 连接同一 WiFi。
+- 关闭手机移动数据。
+- 重启 ESP32 与路由器。
+- 检查路由器设置后发现开启了 AP 隔离。
+
+解决方法：
+
+> 关闭路由器 AP 隔离功能，或改用手机热点进行测试。
+
+---
+
+#### 周六 18:20 | 功能联调 & 逻辑优化
+
+完成所有硬件与软件联调后，对系统进行以下优化：
+
+- 校准干燥和湿润状态下的 ADC 数值。
+- 优化湿度百分比换算公式。
+- 蜂鸣器由持续鸣响改为间歇鸣响，降低噪音。
+- 网页端增加阈值选择按钮。
+- 网页端增加报警关闭按钮。
+- TFT 屏幕分区显示时间、湿度、设备状态、IP 地址。
+- 使用局部刷新减少屏幕闪烁。
+
+---
+
+#### 周六 21:10 | 项目收尾 & 文档整理
+
+对整机进行长时间稳定性测试，确认以下功能均正常运行：
+
+- 土壤湿度实时读取
+- TFT 屏幕显示
+- 网页控制台访问
+- 报警阈值切换
+- 蜂鸣器缺水报警
+- 网页端手动静音
+- NTP 北京时间同步
+- 3D 打印外壳固定与展示
+
+最终完成项目文档、接线说明、问题排查记录和路演准备。
+
+---
 
 ### 成果图片记录
 
-![Fig.30 项目成员分工与协作记录](images/pic30.png)
+![Fig.30 Web 控制台与整体功能演示](images/pic30.png)
 
-![Fig.31 面包板原型搭建与杜邦线连接](images/pic31.jpg)
+![Fig.31 TFT 彩屏黑屏问题排查与接线调试](images/pic31.jpg)
 
-![Fig.32 Web 控制台实时显示湿度数据](images/pic32.jpg)
+![Fig.32 土壤湿度传感器模块](images/pic32.jpg)
 
-![Fig.33 TFT 彩屏接线与显示模块调试](images/pic33.jpg)
+![Fig.33 ESP32 主控板与核心接线](images/pic33.jpg)
 
-![Fig.34 土壤湿度传感器模块与检测探头](images/pic34.jpg)
+![Fig.34 Bambu Lab 3D 打印外壳过程](images/pic34.jpg)
 
-![Fig.35 Bambu Lab 打印外壳结构件](images/pic35.jpg)
+![Fig.35 面包板原型验证与复杂走线梳理](images/pic35.jpg)
+
+![Fig.36 定制 3D 打印外壳与内部走线布局](images/pic36.jpg)
+
+![Fig.37 本地 TFT 屏幕与 Web 控制台双端同步](images/pic37.jpg)
+
+![Fig.38 TFT 屏幕 UI 特写](images/pic38.jpg)
+
+![Fig.39 湿度探头实测场景与系统侧视角](images/pic39.jpg)
+
+---
 
 ### 技术难点与解决方案
 
-- ADC 数值不稳定：  
-  ESP32-S2 的模拟输入需要统一分辨率，因此在初始化中加入 `analogReadResolution(12)`，保证读取范围为 0~4095。
+#### 1. ADC 数值不稳定
 
-- 屏幕刷新闪烁：  
-  如果每次循环都全屏刷新，会导致肉眼可见闪烁。最终采用 `fillRect()` 局部清除区域，只刷新变化内容。
-
-- 蜂鸣器报警与网页响应冲突：  
-  若使用 `delay()` 控制蜂鸣器，会导致网页请求卡顿。因此改用 `millis()` 实现非阻塞报警。
-
-- 土壤湿度百分比换算：  
-  通过空气干燥值和完全浸水值进行标定，再使用 `map()` 与 `constrain()` 限制结果范围，使网页显示更加直观。
-
-### 完整项目代码
-
-> 注：为避免在公开仓库中暴露个人 WiFi 密码，下面代码中的 `password` 建议在本地烧录前自行替换为实际密码。
+ESP32-S2 的模拟输入需要统一分辨率，因此在初始化中加入：
 
 ```cpp
-#include <Arduino.h>
-#include <WiFi.h>
-#include <WebServer.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_ST7735.h>
-#include <SPI.h>
-#include "time.h"
+analogReadResolution(12);
+```
 
-// ================= 引脚定义 (专为 S2 Mini 外排针脚纯手工定制!) =================
-#define TFT_CS     16   // 左侧外排
-#define TFT_DC     18   // 左侧外排
-#define TFT_RST    33   // 左侧外排
-#define TFT_SCLK   35   // 左侧外排
-#define TFT_MOSI   37   // 左侧外排
+保证 ADC 读取范围为 `0 ~ 4095`，与干湿校准值保持一致。
 
-#define SOIL_PIN   4    // 右侧外排 (ADC)
-#define BEEP_PIN   6    // 右侧外排
-#define BEEP_ON    HIGH
-#define BEEP_OFF   LOW
+---
 
-// ================= WiFi 配置 =================
-const char* ssid = ""; 
-const char* password = ""; 
+#### 2. 屏幕刷新闪烁
 
-const char* ntpServer = "ntp.aliyun.com";
-const long  gmtOffset_sec = 8 * 3600; 
-const int   daylightOffset_sec = 0;
+如果每次循环都全屏刷新，会导致肉眼可见闪烁。
 
-// ================= 对象实例化 (使用软件 SPI 随意定脚) =================
-Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
-WebServer server(80);
+解决方法：
 
-// ================= ?? 传感器校准参数 =================
-int dryValue = 4095;  // 探头拿在空气中、擦干时的 AD 数值
-int wetValue = 1500;  // 探头完全泡在水里的 AD 数值
+```cpp
+tft.fillRect(x, y, w, h, color);
+```
 
-// ================= 全局变量 =================
-int currentMoisture = 0;   
-int rawAnalogValue = 0;    
-int alarmThreshold = 30;   
-bool isMuted = false;      
+只清除和刷新变化区域，而不是整屏刷新。
 
-char currentTimeStr[20] = "Syncing...";
-unsigned long lastScreenUpdate = 0; 
+---
 
-// ================= 网页前端代码 =================
-String HtmlPage() {
-  String html = "<!DOCTYPE html><html><head><meta charset='UTF-8'>";
-  html += "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
-  html += "<meta http-equiv='refresh' content='3'>"; 
-  html += "<title>植物卫士 IoT 控制台</title>";
-  html += "<style>body{text-align:center;font-family:'Segoe UI',sans-serif;background:#e8f5e9;} button{padding:12px 20px;font-size:16px;border:none;border-radius:8px;background:#4caf50;color:white;margin:5px;cursor:pointer;box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: 0.2s;} button:hover{opacity: 0.9;} .danger{background:#f44336;} .card{background:white;padding:30px;border-radius:15px;margin:20px auto;max-width:500px;box-shadow:0 10px 20px rgba(0,0,0,0.1);}</style></head><body>";
-  html += "<h2 style='color:#2e7d32;'>? 智能植物卫士 IoT 控制台</h2><div class='card'>";
-  html += "<p style='font-size:18px; color:#555;'>北京时间: <b>" + String(currentTimeStr) + "</b></p><hr style='border:0; border-top:1px solid #eee; margin:20px 0;'>";
-  html += "<p>实时土壤湿度</p>";
-  String color = currentMoisture < alarmThreshold ? "#f44336" : "#2e7d32";
-  html += "<h1 style='color:" + color + ";font-size:72px;margin:10px 0;'>" + String(currentMoisture) + "%</h1>";
-  if (currentMoisture < alarmThreshold) {
-    html += "<p style='font-size:20px;'>状态：<b>?? 极度缺水，请立即浇水！</b></p>";
-    if (isMuted) html += "<p style='color:#f44336;'>(警报已被手动静音)</p>";
-    else html += "<p style='color:#f44336; animation: blink 1s infinite;'>(? 正在鸣笛报警 ?)</p>";
-  } else {
-    html += "<p style='font-size:20px;'>状态：<b>? 湿度完美，植物很健康</b></p>";
-  }
-  html += "<p style='color:#999;font-size:12px;margin-top:20px;'>当前报警线: 低于 " + String(alarmThreshold) + "% | 探头AD原始数值: " + String(rawAnalogValue) + "</p></div>";
-  if (currentMoisture < alarmThreshold && !isMuted) {
-    html += "<a href='/mute'><button class='danger'>? 强制关闭蜂鸣器报警</button></a><br><br>";
-  }
-  html += "<a href='/set20'><button>设为缺水线: 20%</button></a><a href='/set30'><button>设为缺水线: 30%</button></a><a href='/set50'><button>设为缺水线: 50%</button></a></body></html>";
-  return html;
-}
+#### 3. 蜂鸣器报警与网页响应冲突
 
-// ================= Web服务器路由 =================
-void WebService() {
-  server.on("/", []() { server.send(200, "text/html", HtmlPage()); });
-  server.on("/mute", []() { isMuted = true; digitalWrite(BEEP_PIN, BEEP_OFF); server.send(200, "text/html", "<meta http-equiv='refresh' content='0; url=/'><p>已静音，正在返回...</p>"); });
-  server.on("/set20", []() { alarmThreshold = 20; server.send(200, "text/html", "<meta http-equiv='refresh' content='0; url=/'><p>设置成功</p>"); });
-  server.on("/set30", []() { alarmThreshold = 30; server.send(200, "text/html", "<meta http-equiv='refresh' content='0; url=/'><p>设置成功</p>"); });
-  server.on("/set50", []() { alarmThreshold = 50; server.send(200, "text/html", "<meta http-equiv='refresh' content='0; url=/'><p>设置成功</p>"); });
-}
+如果使用 `delay()` 控制蜂鸣器，会导致 WebServer 无法及时响应网页请求。
 
-void updateLocalTime() {
-  struct tm timeinfo;
-  if (!getLocalTime(&timeinfo)) return;
-  sprintf(currentTimeStr, "%02d:%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-}
+解决方法：
 
-void setup() {
-  Serial.begin(115200);
-  delay(100); 
+使用 `millis()` 实现非阻塞报警逻辑：
 
-  // ?? S2 特有保护：强制将模拟量分辨率设为 12 位 (0-4095)，以匹配你之前的干湿校准值！
-  analogReadResolution(12);
-  
-  pinMode(BEEP_PIN, OUTPUT);
+```cpp
+if ((millis() / 300) % 2 == 0) {
+  digitalWrite(BEEP_PIN, BEEP_ON);
+} else {
   digitalWrite(BEEP_PIN, BEEP_OFF);
-
-  // 屏幕初始化 (如果花屏依然可以换成 INITR_GREENTAB)
-  tft.initR(INITR_BLACKTAB); 
-  tft.setRotation(1);
-  tft.fillScreen(ST77XX_BLACK);
-  
-  tft.setTextColor(ST77XX_GREEN);
-  tft.setTextSize(2);
-  tft.setCursor(15, 30);
-  tft.print("Plant Guard");
-  
-  WiFi.begin(ssid, password);
-  tft.setTextColor(ST77XX_WHITE);
-  tft.setTextSize(1);
-  tft.setCursor(15, 60);
-  tft.print("Connecting WiFi...");
-  
-  int retry = 0;
-  while (WiFi.status() != WL_CONNECTED && retry < 20) {
-    delay(500);
-    retry++;
-  }
-
-  tft.fillScreen(ST77XX_BLACK);
-  if (WiFi.status() == WL_CONNECTED) {
-    tft.setCursor(5, 20); tft.print("WiFi Connected!");
-    tft.setCursor(5, 40); tft.print("IP: "); tft.print(WiFi.localIP());
-    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-    Serial.println(WiFi.localIP());
-  } else {
-    tft.setTextColor(ST77XX_RED);
-    tft.setCursor(5, 20); tft.print("WiFi Failed!");
-    tft.setCursor(5, 40); tft.print("Offline Mode");
-  }
-  delay(2000);
-  tft.fillScreen(ST77XX_BLACK); 
-
-  WebService();
-  server.begin();
-}
-
-void loop() {
-  server.handleClient();
-  updateLocalTime();
-
-  rawAnalogValue = analogRead(SOIL_PIN);
-  currentMoisture = map(rawAnalogValue, dryValue, wetValue, 0, 100);
-  currentMoisture = constrain(currentMoisture, 0, 100); 
-
-  if (currentMoisture >= alarmThreshold) {
-    isMuted = false;
-  }
-
-  bool shouldAlarm = (currentMoisture < alarmThreshold) && !isMuted;
-  if (shouldAlarm) {
-    if ((millis() / 300) % 2 == 0) digitalWrite(BEEP_PIN, BEEP_ON);
-    else digitalWrite(BEEP_PIN, BEEP_OFF);
-  } else {
-    digitalWrite(BEEP_PIN, BEEP_OFF);
-  }
-
-  if (millis() - lastScreenUpdate > 500) {
-    lastScreenUpdate = millis();
-
-    // 屏幕防闪烁优化绘制
-    tft.fillRect(0, 0, 160, 20, ST77XX_BLUE);
-    tft.setTextColor(ST77XX_WHITE); 
-    tft.setTextSize(1);
-    tft.setCursor(5, 6);
-    tft.print("Time: ");
-    tft.print(currentTimeStr);
-
-    tft.fillRect(0, 30, 160, 20, ST77XX_BLACK); 
-    if (currentMoisture < alarmThreshold) {
-      tft.setTextColor(ST77XX_RED);
-      tft.setTextSize(2);
-      tft.setCursor(15, 35);
-      tft.print("NEED WATER!");
-    } else {
-      tft.setTextColor(ST77XX_GREEN);
-      tft.setTextSize(1);
-      tft.setCursor(20, 35);
-      tft.print("Moisture Level:");
-    }
-    
-    char moistureStr[10];
-    sprintf(moistureStr, "%-3d%%", currentMoisture); 
-    
-    if (currentMoisture < alarmThreshold) {
-        tft.setTextColor(ST77XX_RED, ST77XX_BLACK);
-    } else {
-        tft.setTextColor(ST77XX_GREEN, ST77XX_BLACK);
-    }
-    tft.setTextSize(4);
-    tft.setCursor(40, 60);
-    tft.print(moistureStr);
-
-    tft.setTextSize(1);
-    tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK);
-    tft.setCursor(5, 100);
-    tft.print("IP: ");
-    tft.print(WiFi.localIP().toString() + "    "); 
-    
-    tft.setCursor(5, 115);
-    tft.print("WiFi Web Control Ready");
-  }
 }
 ```
 
-------
+---
 
-### 附加 | 激光切割实践 (减材制造)
+#### 4. 土壤湿度百分比换算
 
-**项目：校庆元素定制书签**
-* **工艺流程：** 将包含校门矢量图形的设计稿导入 EagleWorks 激光加工软件。
-* **参数调优：** 设定激光功率为 63.0%，切割速度 23.00 mm/s，并开启“路径优化”。成功实现木质（亚克力）材料的精准切割，边缘平滑无焦痕。
+通过空气干燥值和完全浸水值进行标定：
+
+```cpp
+int dryValue = 4095;
+int wetValue = 1500;
+```
+
+再使用：
+
+```cpp
+currentMoisture = map(rawAnalogValue, dryValue, wetValue, 0, 100);
+currentMoisture = constrain(currentMoisture, 0, 100);
+```
+
+将 ADC 原始值转换为用户易理解的百分比。
+
+---
+
+#### 5. 网页无法访问
+
+ESP32 已连接 WiFi 但手机无法访问时，优先检查：
+
+- 手机与 ESP32 是否在同一局域网。
+- 手机是否关闭移动数据。
+- 路由器是否开启 AP 隔离。
+- IP 地址是否输入正确。
+- ESP32 是否成功启动 WebServer。
+
+---
+
+### 常见问题排查
+
+| 问题                         | 可能原因                                              | 解决方案                                                     |
+| ---------------------------- | ----------------------------------------------------- | ------------------------------------------------------------ |
+| 上传代码卡在 `Connecting...` | ESP32 未进入下载模式                                  | 按住 `BOOT` 键 → 点击上传 → 等待连接 → 松开 `BOOT`           |
+| 串口乱码                     | 波特率不匹配                                          | 串口监视器波特率设为 `115200`                                |
+| 湿度数据跳动严重             | 电磁干扰、接线接触不良、模拟信号不稳定                | 增加滤波电容、代码多次采样取平均、重新固定接线               |
+| TFT 彩屏黑屏                 | SPI 引脚接错、供电不足、库配置错误                    | 核对 `CS/DC/RST/SCK/MOSI`，改用 `5V` 供电，检查初始化参数<br><br><img src="images/pic31.jpg" alt="TFT 彩屏黑屏调试记录" width="260"> |
+| 蜂鸣器不响                   | 接线反接、限流电阻过大、GPIO 定义错误                 | 检查蜂鸣器极性，核对代码引脚，必要时降低限流电阻             |
+| 网页无法访问                 | WiFi 连接失败、手机不在同一局域网、路由器开启 AP 隔离 | 检查 WiFi 账号密码，关闭 AP 隔离，或使用手机热点测试         |
+| 湿度始终为 0% 或 100%        | 干湿校准值设置错误，或传感器接线异常                  | 重新读取空气和水中的 ADC 值，修改 `dryValue` 与 `wetValue`   |
+| 外壳无法组装                 | 3D 建模尺寸偏差或公差不足                             | 重新测量实物尺寸，每边预留约 `1mm` 装配余量                  |
+
+---
+
+### 涉及知识点
+
+| 类别     | 知识点                                                       |
+| -------- | ------------------------------------------------------------ |
+| 传感器   | 土壤湿度传感器原理、ADC 采样、干湿校准、滑动平均滤波         |
+| 嵌入式   | ESP32 GPIO 配置、ADC 输入、SPI / 软件 SPI、WiFi 网络连接、NTP 时间同步 |
+| 电路     | 蜂鸣器限流保护、模块供电规范、GND 共地、杜邦线接触不良排查   |
+| 编程     | 状态机逻辑、非阻塞定时、WebServer 网页交互、串口调试         |
+| 3D 打印  | Fusion 360 外壳建模、Bambu Studio 切片、PLA 材料特性、组装公差 |
+| 工程实践 | 快速原型迭代、硬件调试排错、团队协作、项目文档整理、现场演示 |
+
+---
+
+### 项目总结
+
+本次期末创新项目完整经历了：
+
+```text
+需求分析 → 原型搭建 → 代码开发 → 硬件调试 → 外壳设计 → 功能联调 → 路演展示
+```
+
+相比前期单独的传感器实验或 Web Server 实验，本项目将模拟输入、数字输出、WiFi 通信、网页前端、TFT 显示、蜂鸣器报警和 3D 打印外壳整合到一个完整系统中。
+
+最终作品不仅实现了土壤湿度实时监测、网页远程控制和缺水报警，也通过 3D 打印外壳提升了作品的完整度和展示效果，具备较强的实用价值和可复刻性。
+
+---
+
+### 做得好的地方
+
+- 在较短时间内完成了从方案设计到实物展示的完整流程。
+- 团队分工明确，软件、硬件、建模、测试、组装各部分均有人负责。
+- 踩坑记录较完整，传感器损坏、屏幕黑屏、数据跳变、网页访问失败等问题均形成了可复用的排错经验。
+- Web 端和 TFT 端实现了双端数据同步，展示效果较好。
+- 使用 3D 打印外壳提升了项目完成度，使作品更接近真实产品形态。
+
+---
+
+### 可改进的地方
+
+- 引脚规划应更早完成，提前查阅 ESP32-C3 / ESP32-S2 的特殊启动引脚，避免临时更换接线。
+- 关键元件应准备冗余备件，例如蜂鸣器、传感器和彩屏，防止硬件损坏影响进度。
+- 外壳建模前应先精确测量所有模块尺寸，并预留装配公差。
+- 3D 打印任务可以提前安排，减少排队和返工时间。
+- 后续可以加入更完善的滤波算法，提高长期监测稳定性。
+- 当前网页只支持局域网访问，后续可以进一步扩展为云端远程访问。
+
+---
+
+### 未来扩展方向
+
+1. **增加 OLED / 更大尺寸屏幕**
+   展示湿度、环境温湿度、设备运行时长、报警阈值等更多信息。
+
+2. **增加状态指示灯**
+   使用 RGB LED 显示不同状态，例如绿色正常、黄色偏干、红色缺水。
+
+3. **优化报警机制**
+   根据湿度低于阈值的程度动态调整蜂鸣器频率，实现更细致的提醒。
+
+4. **增加蓝牙 / APP 功能**
+   通过手机 APP 存储历史湿度数据，自定义报警阈值，并生成植物养护统计报表。
+
+5. **升级供电方式**
+   改用锂电池搭配充电模块供电，使设备脱离 USB 线，提高摆放灵活性。
+
+6. **增加自动浇灌模块**
+   外接水泵与电磁阀，当检测到土壤缺水时自动完成浇水，实现绿植无人值守养护。
+
+7. **拓展环境监测维度**
+   增加温湿度传感器、光照传感器等模块，构建更完整的植物生长环境监测系统。
+

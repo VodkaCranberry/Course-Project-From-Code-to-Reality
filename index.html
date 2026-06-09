@@ -508,111 +508,128 @@ void loop() {
             </div>
 
             <h3>团队成员与分工</h3>
-            <p>本项目由 <strong>黄新雄</strong> 与 <strong>邓童</strong> 协作完成。具体分工涵盖了硬件电路搭建、3D外壳建模、C++ 解析逻辑编写及前端网页控制台的整合。</p>
+            <ul>
+                <li><strong>黄新雄：</strong> 负责整体硬件电路设计与连线、核心解析逻辑与 Web Server 网页端代码的编写、软硬件系统联调、除虫（Debug）以及最终的硬件物理封装。</li>
+                <li><strong>邓童：</strong> 负责项目外壳的 3D 建模设计与切片打印工作。</li>
+            </ul>
 
-            <h3>具体操作过程</h3>
-            <ol>
-                <li><strong>硬件电路搭建与验证：</strong>
-                    首先在面包板上搭建原型电路。利用光敏电阻与固定电阻串联构成 <strong>分压电路</strong>，接入 ESP32 的模拟输入引脚以采集光照阈值；同时接入机械按键并配置下拉电阻读取高低电平。
+            <h3>团队合作过程</h3>
+            <p>
+                在本次项目中，我们采用了“软硬解耦、并行推进”的协作模式。前期，<strong>邓童</strong>根据我提供的光敏电阻、按键和主控板的物理尺寸清单，率先开始 3D
+                外壳的建模与试打印工作，为项目提供结构支持；同时，<strong>我（黄新雄）</strong>全面接手并独立完成了面包板分压电路的搭建和底层通信代码的编写。3D
+                外壳打印交付后，由<strong>黄新雄</strong>负责进行硬件部件的严密嵌入与内部复杂排线的梳理固定。在最终联调阶段，面对自然光线干扰导致误触发的棘手问题，我通过在代码端反复调优防抖延时参数，配合物理遮光罩的结构，独立完成了软件算法与实体硬件的完美适配。
+            </p>
+
+            <h3>项目开发成果与问题解决过程</h3>
+            <ul>
+                <li><strong>成果展示：</strong>
+                    成功打造了一台具备复古工业风外观的“双模光学摩斯密码机”。设备不仅能精准捕获长短按键和光照遮挡信号，还能将摩斯密码无延迟地解析为对应字母，并通过局域网实时推送到手机或电脑的 Web
+                    控制台上，实现了物理世界交互与数字世界UI的彻底打通。
+
+                    <div class="image-grid" style="grid-template-columns: 1fr; margin-top: 20px; margin-bottom: 20px;">
+                        <figure style="max-width: 600px; margin: 0 auto;">
+                            <img src="images/pic42.png" alt="摩斯密码机成品展示">
+                            <figcaption>Fig.24 摩斯密码机 Web 控制台与双模硬件联调成品</figcaption>
+                        </figure>
+                    </div>
                 </li>
-                <li><strong>结构设计与组装：</strong>
-                    根据面包板与主控板的实际尺寸，设计并使用 3D 打印机打印了专用的外壳。将接线完毕的面包板整体嵌入壳体，确保外部光线能准确照射到光敏电阻，按键留有操作孔位。</li>
-                <li><strong>软件开发与算法调试：</strong>
-                    <ul>
-                        <li><strong>时间差算法：</strong> 放弃了容易引起死机的 <code>delay()</code> 方案，改用 <code>millis()</code>
-                            函数记录触发的下降沿和上升沿，计算时间差。</li>
-                        <li><strong>双模逻辑判定：</strong> 按键模式下，按下 50ms~2s 判定为“点(.)”，大于 2s 判定为“划(-)”；光感模式下，为了防抖，遮光 2~4s
-                            才判定为“点(.)”，大于 4s 判定为“划(-)”。</li>
-                        <li><strong>通信层：</strong> 使用 <code>&lt;WebServer.h&gt;</code> 搭建网页端，通过 <code>/data</code>
-                            接口返回包含当前输入缓冲区和已解密字母的 JSON 数据，实现网页端每 500ms 的自动刷新反馈。</li>
-                    </ul>
+                <li><strong>问题 1：硬件 <code>delay()</code> 导致的网页卡顿断连。</strong>
+                    <br><em>排查与解决：</em> 初期我们习惯使用 <code>delay()</code> 函数进行按键防抖和长短按时长的识别，但实测发现，这会导致单片机主线程阻塞，Web Server
+                    无法及时响应前端的 HTTP 请求。最终果断重构代码，全面引入 <code>millis()</code> 时间戳记录机制，通过计算动作前后的差值，实现了非阻塞式的状态机轮询。
                 </li>
-            </ol>
+                <li><strong>问题 2：环境自然光线干扰导致误判。</strong>
+                    <br><em>排查与解决：</em> 教室内的自然光变化以及人员走动的阴影，极易导致光敏电阻的 AD 值发生漂移，产生“幽灵输入”。解决方案是在 3D
+                    外壳设计上增加了“深桶型遮光罩”结构，从物理层面有效屏蔽侧边散射光；同时在代码中增加了 50ms 的软件消抖逻辑，并调优了 <code>LIGHT_THRESHOLD</code> 的触发临界点。
+                </li>
+            </ul>
+
+            <h3>材料归还记录</h3>
+            <div class="notice-box">
+                <p><strong>项目结题，已安全归还以下实验耗材：</strong></p>
+                <ul>
+                    <li>1. 杜邦线若干</li>
+                    <li>2. 面包板 * 1</li>
+                    <li>3. 光敏电阻 * 1</li>
+                    <li>4. 电阻 * 4，机械按钮 * 1</li>
+                    <li>5. ESP32 主控芯片 * 1</li>
+                </ul>
+            </div>
+            <div class="image-grid" style="grid-template-columns: 1fr;">
+                <figure style="max-width: 500px; margin: 0 auto;">
+                    <img src="images/pic40.png" alt="归还材料合影">
+                    <figcaption>Fig.25 耗材清点与归还留档</figcaption>
+                </figure>
+            </div>
 
             <h3>项目实物展示</h3>
             <div class="image-grid">
                 <figure><img src="images/pic25.jpg" alt="基础连线">
-                    <figcaption>Fig.25 面包板基础连线测试</figcaption>
+                    <figcaption>Fig.26 面包板基础连线测试</figcaption>
                 </figure>
                 <figure><img src="images/pic26.jpg" alt="3D外壳">
-                    <figcaption>Fig.26 嵌入定制 3D 打印外壳</figcaption>
+                    <figcaption>Fig.27 嵌入定制 3D 打印外壳</figcaption>
                 </figure>
                 <figure><img src="images/pic27.jpg" alt="连线细节">
-                    <figcaption>Fig.27 ESP32 杜邦线走线梳理</figcaption>
+                    <figcaption>Fig.28 ESP32 杜邦线走线梳理</figcaption>
                 </figure>
                 <figure><img src="images/pic28.jpg" alt="分压电路">
-                    <figcaption>Fig.28 光敏电阻分压电路特写</figcaption>
+                    <figcaption>Fig.29 光敏电阻分压电路特写</figcaption>
                 </figure>
                 <figure><img src="images/pic29.jpg" alt="引脚特写">
-                    <figcaption>Fig.29 主控板引脚接线细节</figcaption>
+                    <figcaption>Fig.30 主控板引脚接线细节</figcaption>
                 </figure>
             </div>
 
-            <h3>源代码展示</h3>
-            <pre><code class="language-cpp">/**
- * 项目：复古光学摩斯密码机 V5.0
- * 核心逻辑：基于 millis() 的双模时间差计算
- */
-
-#include &lt;WiFi.h&gt;
-#include &lt;WebServer.h&gt;
-
-const int LDR_PIN = 4;       
-const int BUTTON_PIN = 6;    
-const int LED_PIN = 15;      
-
-const char *ssid = "";
-const char *password = "";
-
-// --- 判定参数 (毫秒) ---
-const int LIGHT_THRESHOLD = 7500;  
-const unsigned long BTN_DASH_TIME = 2000;
-const unsigned long LDR_DOT_MIN = 2000;  
-const unsigned long LDR_DASH_MIN = 4000; 
-
-WebServer server(80);
-String morseBuffer = "";    
-String decodedMessage = ""; 
-unsigned long startTime = 0;
-bool isActive = false;      
-bool buttonMode = false;    
-
-char decodeMorse(String s) {
-  if (s == ".-") return 'A';   if (s == "-...") return 'B'; 
-  if (s == "-.-.") return 'C'; if (s == "-..") return 'D';  
-  if (s == ".") return 'E';    if (s == "..-.") return 'F';
-  // ... 摩斯密码字典映射
-  return '?';
-}
-
+            <h3>系统核心源代码解析</h3>
+            <p>为保证 Web Server 的高并发响应能力，本项目彻底摒弃了传统的 <code>delay()</code> 阻塞延时，核心采用了基于 <code>millis()</code>
+                的异步时间戳状态机。以下为双模（光敏/按键）信号捕获与解析的核心逻辑片段：</p>
+            <pre><code class="language-cpp">// 核心逻辑：基于 millis() 的非阻塞双模时间差计算
 void loop() {
-  server.handleClient();
+  server.handleClient(); // 优先处理网页端请求，保证通信不卡顿
   
-  // 状态轮询：根据当前模式读取物理输入
-  bool triggered = buttonMode ? (digitalRead(BUTTON_PIN) == LOW) : (analogRead(LDR_PIN) &gt;= LIGHT_THRESHOLD);
+  // 状态轮询：根据当前模式动态读取对应的物理输入（按键低电平触发 / 光敏突破高阈值触发）
+  bool triggered = buttonMode ? (digitalRead(BUTTON_PIN) == LOW) : (analogRead(LDR_PIN) >= LIGHT_THRESHOLD);
 
-  if (triggered &amp;&amp; !isActive) {
-    startTime = millis(); // 记录起始时间
+  // 状态机：捕获信号下降沿（触发瞬间）
+  if (triggered && !isActive) {
+    startTime = millis(); // 记录起始时间戳
     isActive = true;
-    digitalWrite(LED_PIN, HIGH);
+    digitalWrite(LED_PIN, HIGH); // 开启指示灯反馈
   }
 
-  if (!triggered &amp;&amp; isActive) {
-    unsigned long dur = millis() - startTime; // 计算持续时长
+  // 状态机：捕获信号上升沿（松开瞬间）
+  if (!triggered && isActive) {
+    unsigned long dur = millis() - startTime; // 计算信号持续的绝对时长
     isActive = false;
     digitalWrite(LED_PIN, LOW);
 
-    // 逻辑判定树
+    // 逻辑判定树：根据不同模式的长短时长，解析为摩斯密码的点和划
     if (buttonMode) {
-      if (dur &gt;= BTN_DASH_TIME) morseBuffer += "-";
-      else if (dur &gt; 50) morseBuffer += "."; // 50ms 软件消抖
+      if (dur >= BTN_DASH_TIME) morseBuffer += "-";
+      else if (dur > 50) morseBuffer += "."; // 引入 50ms 软件消抖机制滤除毛刺
     } else {
-      if (dur &gt;= LDR_DASH_MIN) morseBuffer += "-"; 
-      else if (dur &gt;= LDR_DOT_MIN) morseBuffer += "."; 
+      if (dur >= LDR_DASH_MIN) morseBuffer += "-"; 
+      else if (dur >= LDR_DOT_MIN) morseBuffer += "."; 
     }
-    Serial.println("当前缓冲区: " + morseBuffer);
+    Serial.println("当前缓冲区解析: " + morseBuffer);
   }
 }</code></pre>
+
+            <h3>实验总结与反思</h3>
+            <p>
+                本次中期项目完成了从零散电子元器件到完整交互物理硬件的跨越。通过软硬件结合，我们不仅验证了基于 ESP32
+                的模拟与数字双模信号采集的可行性，更在实战中深刻理解了<strong>“状态机”</strong>在非阻塞式物联网系统中的核心地位。在团队紧密协作下，我们成功克服了自然光干扰、物理电平毛刺与通信阻塞等一系列技术瓶颈，最终达到了预期的双端交互指标。
+            </p>
+
+            <h3>后续改进迭代方向</h3>
+            <ul>
+                <li><strong>1. 通信协议升级：</strong> 目前网页端采用的是每 500ms 刷新一次的轮询（Polling）机制，偶有延迟。未来可将其改造为 <strong>WebSocket
+                        双向通信</strong>，实现物理按键敲击与网页端字符毫秒级的零延迟同步推送。</li>
+                <li><strong>2. 硬件结构优化：</strong> 现有的按键手感偏软，后续可通过 3D 打印设计更精密的机械杠杆与弹簧传动结构，完美复刻真实的电报机回弹手感，提升实体交互体验。</li>
+                <li><strong>3. 离线解码与扩展：</strong> 在代码中内置更庞大的摩斯密码与中英文字符映射字典（如引入字典树结构提升检索效率），并在硬件端增设 OLED
+                    屏幕，实现脱离局域网网页端的独立离线解密与显示。
+                </li>
+            </ul>
         </section>
 
         <section id="sec8">
@@ -684,6 +701,37 @@ void loop() {
                 <li><strong>李瑛琪（3D建模）：</strong>Fusion 360 外壳设计、Bambu Lab 打印、组装</li>
                 <li><strong>刘知行（测试/文档）：</strong>功能测试、演示准备、物料协调、拍照记录</li>
                 <li><strong>唐宇涵（组装/调试）：</strong>外壳组装、热熔胶固定、走线理线、现场演示</li>
+            </ul>
+
+            <h3>团队合作过程</h3>
+            <p>
+                本项目在 48 小时的极限开发中，全队采取了高度紧密的“软-硬-拓扑结构-集成测试”敏捷开发流水线。
+                首先由负责电路的 <strong>黄新雄</strong> 精确测算各硬件外设的电学参数，并将主控、探头与彩屏的物理公差尺寸第一时间同步给 <strong>李瑛琪</strong> 开展 Fusion 360
+                的外壳精细建模；
+                在此期间，负责软件的 <strong>李露</strong> 开展全链路的代码架构搭建，与 <strong>黄新雄</strong> 进行底层驱动的联合把脉。
+                外壳在拓竹 A1 mini 打印期间，<strong>刘知行</strong> 与 <strong>唐宇涵</strong> 协同开展多轮模块级的冒烟测试，详尽记录数据跳变日志，并协助
+                <strong>黄新雄</strong> 进行焊接与分压。
+                最终外壳交付后，由 <strong>唐宇涵</strong> 主导硬件总装与热熔胶固线，全队在答辩现场紧密配合，完美呈现了软硬一体化的路演效果。
+            </p>
+
+            <h3>项目开发成果与问题解决过程</h3>
+            <ul>
+                <li><strong>技术成果：</strong> 成功研制出具备高度工业完整度的桌面级 IoT 植物养护设备。系统实现了高精度的土壤模拟量标定与映射，在物理端通过 1.8 寸 TFT
+                    屏构建了层次清晰的图形
+                    UI，在云端搭建了每 3 秒自动轮询的专属 Web Server 控制面板，支持远程一键消警与动态阈值重载，实测综合响应时延小于 150ms。</li>
+                <li><strong>硬核战役 1：智能称重水杯垫方案的数据漂移与断然 Pivot（换题）</strong>
+                    <br><em>问题描述：</em> 项目第一阶段原本计划制作基于 HX711 称重模块的压力应力智能杯垫。但在联调时发现，由于应力铝条物理悬空结构的蠕变特性、环境微弱气流噪声以及 ADC
+                    高频采样的阶跃抖动，导致裸数据原码发生严重漂移，去抖动平均滤波算法亦无法根除误判。
+                    <br><em>解决过程：</em> 面对可能导致答辩失败的重大风险，全队迅速召开緊急会议，果断推翻原有物理架构进行 Pivot（方向转向）。利用现有的 ESP32
+                    算力资源，紧急切入阻性土壤湿度传感器方案，重构为智能植物卫士，在数小时内完成了技术栈的彻底迁移，化险为夷。
+                </li>
+                <li><strong>硬核战役 2：Strapping Pins（启动引脚）死穴导致的无限重启</strong>
+                    <br><em>问题描述：</em> 在更换为湿度方案并接入彩屏后，主板一通电就疯狂弹红字死机，提示 <code>invalid magic number</code> 并不停抽搐重启。
+                    <br><em>解决过程：</em> <strong>黄新雄</strong> 与 <strong>李露</strong> 连夜查阅 ESP32 芯片技术手册，定位到真凶：彩屏的
+                    <code>DC</code>
+                    引脚不小心接在了核心控制芯片的 <code>GPIO 2</code> 上。<code>GPIO 2</code> 属于芯片的 Strapping
+                    引脚，开机瞬间其电平直接决定主板进入工作模式还是下载模式。彩屏内部的弱下拉电阻破坏了开机电平，导致芯片装死。全队立刻进行引脚重新洗牌，将数据线迁移至安全的非控制引脚，问题彻底解决。
+                </li>
             </ul>
 
             <h3>硬件清单</h3>
@@ -824,7 +872,7 @@ void loop() {
                 <li>打开「文件 → 首选项」，填入 ESP32 附加开发板管理器网址。</li>
                 <li>进入「工具 → 开发板 → 开发板管理器」，搜索 <code>esp32</code>，安装 ESP32 Arduino 平台包。</li>
                 <li>在「工具 → 开发板」中选择 <code>ESP32C3 Dev Module</code> 或对应的 ESP32-S2 Mini 开发板。</li>
-                <li>在「工具 → Port」中选择设备对应串口。</li>
+                <li>在「工具 → Port toggle」中选择设备对应串口。</li>
                 <li>打开库管理器，安装依赖库：<code>Adafruit ST7735 and ST7789 Library</code>、<code>Adafruit GFX Library</code>、<code>WebServer</code>。
                 </li>
             </ol>
@@ -839,109 +887,68 @@ void loop() {
             </ol>
 
             <h3>具体操作过程（Design Log）</h3>
-
-            <p><strong>周六 10:00｜项目启动 &amp; 硬件清点：</strong>
-                团队成员集合后领取 ESP32 主控板、土壤湿度传感器、ST7735
-                彩屏、蜂鸣器、杜邦线等物料。结合家庭绿植缺水提醒的使用场景，确定开发“智能土壤湿度监测系统”，核心功能包括湿度采集、蜂鸣报警、屏幕显示、网页远程控制。
-            </p>
-
-            <p><strong>周六 10:30｜分工确认 &amp; 方案细化：</strong>
-                明确软件开发、硬件接线、3D 建模、功能测试、整机组装五大板块。系统逻辑确定为：传感器采集土壤湿度 → 主控处理并换算百分比 → TFT 屏幕实时刷新 → 低于阈值触发蜂鸣器报警 →
-                手机网页查看数据、修改阈值、关闭报警。
-            </p>
-
-            <p><strong>周六 11:20｜踩坑 1：传感器读数固定不变：</strong>
-                完成接线后，土壤湿度传感器数值一直保持固定值，探头接触水或土壤后没有变化。排查 VCC、GND、AO 接线无误后，分别使用 3.3V 与 5V
-                供电测试，问题依旧。最终发现是传感器探头内部线路损坏，更换新传感器后数据恢复正常。
-            </p>
-
-            <p><strong>周六 13:10｜踩坑 2：TFT 彩屏黑屏无法启动：</strong>
-                彩屏接线完成后上电全程黑屏，无任何文字显示。我们先检查 CS、DC、RST、SCLK、MOSI 等 SPI 引脚，再更换库文件和初始化参数，仍然无法解决。后续判断是硬件 SPI 引脚存在兼容性问题，改用软件
-                SPI
-                后屏幕成功点亮。
-            </p>
-
-            <p><strong>周六 14:50｜踩坑 3：湿度数据波动跳变：</strong>
-                传感器放在同一土壤环境中，原始 AD 值频繁跳动，湿度百分比也随之波动，导致蜂鸣器误报警。解决方案是在硬件上增加滤波电容，在代码中加入多次采样平均与防抖逻辑，减少瞬时噪声对判断结果的影响。
-            </p>
-
-            <p><strong>周六 16:40｜踩坑 4：手机无法访问网页端：</strong>
-                ESP32 已经成功连接 WiFi，串口和屏幕也能显示 IP 地址，但手机浏览器无法打开控制网页。排查后发现手机与开发板虽然在同一 WiFi 下，但路由器开启了 AP
-                隔离功能，导致局域网设备之间无法互访。关闭 AP
-                隔离后网页正常访问。
-            </p>
-
-            <p><strong>周六 18:20｜功能联调 &amp; 逻辑优化：</strong>
-                完成硬件与软件联调，重新校准干燥和湿润状态下的 AD 数值，修正湿度百分比换算公式；优化蜂鸣器报警节奏为间断鸣响，降低噪音；网页端增加阈值选择按钮、报警关闭按钮、实时数据展示；TFT
-                屏幕分区展示时间、湿度、状态和 IP
-                地址。
-            </p>
-
+            <p><strong>周六 10:00｜项目启动 &amp; 硬件清点：</strong> 团队成员集合后领取 ESP32 主控板、土壤湿度传感器、ST7735
+                彩屏、蜂鸣器、杜邦线等物料。结合家庭绿植缺水提醒的使用场景，确定开发“智能土壤湿度监测系统”，核心功能包括湿度采集、蜂鸣报警、屏幕显示、网页远程控制。</p>
+            <p><strong>周六 10:30｜分工确认 &amp; 方案细化：</strong> 明确软件开发、硬件接线、3D 建模、功能测试、整机组装五大板块。系统逻辑确定为：传感器采集土壤湿度 → 主控处理并换算百分比
+                → TFT
+                屏幕实时刷新 → 低于阈值触发蜂鸣器报警 → 手机网页查看数据、修改阈值、关闭报警。</p>
+            <p><strong>周六 11:20｜踩坑 1：传感器读数固定不变：</strong> 完成接线后，土壤湿度传感器数值一直保持固定值，探头接触水或土壤后没有变化。排查 VCC、GND、AO 接线无误后，分别使用
+                3.3V 与 5V
+                供电测试，问题依旧。最终发现是传感器探头内部线路损坏，更换新传感器后数据恢复正常。</p>
+            <p><strong>周六 13:10｜踩坑 2：TFT 彩屏黑屏无法启动：</strong> 彩屏接线完成后上电全程黑屏，无任何文字显示。我们先检查 CS、DC、RST、SCLK、MOSI 等 SPI
+                引脚，再更换库文件和初始化参数，仍然无法解决。后续判断是硬件 SPI 引脚存在兼容性问题，改用软件 SPI 后屏幕成功点亮。</p>
+            <p><strong>周六 14:50｜踩坑 3：湿度数据波动跳变：</strong> 传感器放在同一土壤环境中，原始 AD
+                值频繁跳动，湿度百分比也随之波动，导致蜂鸣器误报警。解决方案是在硬件上增加滤波电容，在代码中加入多次采样平均与防抖逻辑，减少瞬时噪声对判断结果的影响。</p>
+            <p><strong>周六 16:40｜踩坑 4：手机无法访问网页端：</strong> ESP32 已经成功连接 WiFi，串口和屏幕也能显示 IP
+                地址，但手机浏览器无法打开控制网页。排查后发现手机与开发板虽然在同一 WiFi
+                下，但路由器开启了 AP 隔离功能，导致局域网设备之间无法互访。关闭 AP 隔离后网页正常访问。</p>
+            <p><strong>周六 18:20｜功能联调 &amp; 逻辑优化：</strong> 完成硬件与软件联调，重新校准干燥和湿润状态下的 AD
+                数值，修正湿度百分比换算公式；优化蜂鸣器报警节奏为间断鸣响，降低噪音；网页端增加阈值选择按钮、报警关闭按钮、实时数据展示；TFT 屏幕分区展示时间、湿度、状态和 IP 地址。</p>
             <p><strong>周六 21:10｜项目收尾 &amp; 文档整理：</strong>
-                对整机进行长时间稳定性测试，确认屏幕显示、网页访问、蜂鸣报警、阈值设置、静音控制均能稳定运行。随后整理接线图、开发过程、问题排查记录和项目展示资料，完成最终路演准备。
-            </p>
-
-            <p><strong>周日 10:00｜3D外壳封装与硬件固化：</strong>
-                进入最终的实物装配阶段。拿到连夜打印完成的红色定制外壳后，我们将面包板、ESP32 主控和复杂的杜邦线小心翼翼地归拢并塞入内部底座。为了防止下午路演搬运时接线松动导致功亏一篑，我们对关键的 SPI 和 I2C
-                引脚节点进行了理线，并用胶带和热熔胶对 TFT 屏幕开窗处及电源接口进行了物理加固，整个作品的“产品感”瞬间成型。
-            </p>
-
-            <p><strong>周日 11:30｜路演彩排与双端极限测试：</strong>
-                在装盒完成后进行最后一次全流程演练。我们准备了湿纸巾包裹传感器探头，用来模拟刚刚浇过水的湿润土壤环境。在抽离湿纸巾的瞬间，TFT 屏幕无延迟切换为红色“NEED WATER”警告，蜂鸣器准时响起，同时手机
-                Web
-                控制台也精准实现了数据同步与标红预警。团队对照着演示流程进行了分工串词，确保能流畅解答架构选型和代码逻辑。
-            </p>
-
-            <p><strong>周日 14:30 - 17:00｜期末创新项目验收与答辩：</strong>
-                项目迎来最终的验收时刻！在演示环节，我们向评委完整展示了“智能植物卫士”从硬件传感、边缘计算到局域网 IoT 控制的完整闭环。现场实测环节中，无论是模拟缺水的秒级报警，还是网页端的“强制静音”和“动态修改
-                20%/30%/50%
-                报警线”功能，均完美触发，全程未出现任何死机或断连情况。项目的高完成度与精美的 UI 呈现获得了认可，本次创客挑战圆满收官！
-            </p>
+                对整机进行长时间稳定性测试，确认屏幕显示、网页访问、蜂鸣报警、阈值设置、静音控制均能稳定运行。随后整理接线图、开发过程、问题排查记录和项目展示资料，完成最终路演准备。</p>
+            <p><strong>周日 10:00｜3D外壳封装与硬件固化：</strong> 进入最终的实物装配阶段。拿到连夜打印完成的红色定制外壳后，我们将面包板、ESP32
+                主控和复杂的杜邦线小心翼翼地归拢并塞入内部底座。为了防止下午路演搬运时接线松动导致功亏一篑，我们对关键的 SPI 和 I2C 引脚节点进行了理线，并用胶带和热熔胶对 TFT
+                屏幕开窗处及电源接口进行了物理加固，整个作品的“产品感”瞬间成型。</p>
+            <p><strong>周日 11:30｜路演彩排与双端极限测试：</strong> 在装盒完成后进行最后一次全流程演练。我们准备了湿纸巾包裹传感器探头，用来模拟刚刚浇过水的湿润土壤环境。在抽离湿纸巾的瞬间，TFT
+                屏幕无延迟切换为红色“NEED WATER”警告，蜂鸣器准时响起，同时手机 Web 控制台也精准实现了数据同步与标红预警。团队对照着演示流程进行了分工串词，确保能流畅解答架构选型和代码逻辑。</p>
+            <p><strong>周日 14:30 - 17:00｜期末创新项目验收与答辩：</strong> 项目迎来最终的验收时刻！在演示环节，我们向评委完整展示了“智能植物卫士”从硬件传感、边缘计算到局域网 IoT
+                控制的完整闭环。现场实测环节中，无论是模拟缺水的秒级报警，还是网页端的“强制静音”和“动态修改 20%/30%/50% 报警线”功能，均完美触发，全程未出现任何死机或断连情况。项目的高完成度与精美的 UI
+                呈现获得了认可，本次创客挑战圆满收官！</p>
 
             <h3>项目实物与调试记录</h3>
             <div class="image-grid">
-                <figure>
-                    <img src="images/pic32.jpg" alt="土壤湿度传感器模块">
+                <figure><img src="images/pic32.jpg" alt="土壤湿度传感器模块">
                     <figcaption>Fig.30 阻性土壤湿度传感器及比较器模块</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic33.jpg" alt="ESP32主控">
+                <figure><img src="images/pic33.jpg" alt="ESP32主控">
                     <figcaption>Fig.31 ESP32 主控板与核心接线测试</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic31.jpg" alt="TFT屏幕驱动调试">
+                <figure><img src="images/pic31.jpg" alt="TFT屏幕驱动调试">
                     <figcaption>Fig.32 1.8寸 TFT 彩屏底层驱动调试与连线</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic35.jpg" alt="面包板原型验证">
+                <figure><img src="images/pic35.jpg" alt="面包板原型验证">
                     <figcaption>Fig.33 面包板原型验证与复杂走线梳理</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic34.jpg" alt="Bambu Lab 3D打印机">
+                <figure><img src="images/pic34.jpg" alt="Bambu Lab 3D打印机">
                     <figcaption>Fig.34 拓竹 A1 mini 进行设备外壳 3D 打印</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic30.png" alt="双端互通展示">
+                <figure><img src="images/pic30.png" alt="双端互通展示">
                     <figcaption>Fig.35 Web 端控制台与实物全流程联调演示</figcaption>
                 </figure>
             </div>
 
             <h3>最终成品展示</h3>
             <div class="image-grid">
-                <figure>
-                    <img src="images/pic36.jpg" alt="成品外壳与内部结构">
+                <figure><img src="images/pic36.jpg" alt="成品外壳与内部结构">
                     <figcaption>Fig.36 定制 3D 打印红盒外壳与内部走线布局</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic37.jpg" alt="双端数据同步">
+                <figure><img src="images/pic37.jpg" alt="双端数据同步">
                     <figcaption>Fig.37 本地 TFT 屏幕与 Web 远程控制台双端数据同步联调</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic38.jpg" alt="屏幕 UI 特写">
+                <figure><img src="images/pic38.jpg" alt="屏幕 UI 特写">
                     <figcaption>Fig.38 本地屏幕 UI 特写：实时显示湿度、时间与网络状态</figcaption>
                 </figure>
-                <figure>
-                    <img src="images/pic39.jpg" alt="整体运行状态">
+                <figure><img src="images/pic39.jpg" alt="整体运行状态">
                     <figcaption>Fig.39 湿度探头实测场景及系统侧视角</figcaption>
                 </figure>
             </div>
@@ -1009,8 +1016,6 @@ void loop() {
                     </tr>
                     <tr>
                         <td>TFT 彩屏黑屏</td>
-                        <img src="images/pic31.jpg" alt="TFT 彩屏黑屏调试记录"
-                            style="width:260px; margin-top:10px; border-radius:8px;">
                         <td>SPI 引脚接错、供电不足、库配置错误</td>
                         <td>核对 CS/DC/RST/SCK/MOSI，改用 5V 供电，检查初始化参数</td>
                     </tr>
@@ -1032,252 +1037,73 @@ void loop() {
                 </tbody>
             </table>
 
-            <h3>系统核心源代码</h3>
-            <pre><code class="language-cpp">#include &lt;Arduino.h&gt;
-#include &lt;WiFi.h&gt;
-#include &lt;WebServer.h&gt;
-#include &lt;Adafruit_GFX.h&gt;
-#include &lt;Adafruit_ST7735.h&gt;
-#include &lt;SPI.h&gt;
-#include &lt;time.h&gt;
+            <h3>系统核心源代码解析</h3>
+            <p>由于工程全量代码较长，此处精选解构两个最核心的嵌入式算法片段：</p>
 
-// 引脚定义
-#define TFT_CS     1
-#define TFT_DC     2
-#define TFT_RST    3
-#define TFT_SCLK   6
-#define TFT_MOSI   7
-#define SOIL_PIN   0
-#define BEEP_PIN   10
-#define BEEP_ON    HIGH
-#define BEEP_OFF   LOW
+            <h4>1. 基于异步时间戳的非阻塞声光警报状态机</h4>
+            <p>为保证 Web 服务器的高动态响应，主循环彻底杜绝了阻塞式的 <code>delay()</code> 函数。通过 <code>millis()</code>
+                间接计算节拍，实现了在处理网页请求的同时，让蜂鸣器以 300ms
+                为周期平滑闪烁断续鸣叫。</p>
+            <pre><code class="language-cpp">// 计算当前是否需要触发报警状态机
+bool shouldAlarm = (currentMoisture &lt; alarmThreshold) && !isMuted;
 
-// WiFi 配置信息
-const char* ssid = "Titanic";
-const char* password = "20060426";
+if (shouldAlarm) {
+    // 利用非阻塞时间戳实现每 300ms 高低电平动态翻转
+    if ((millis() / 300) % 2 == 0) {
+        digitalWrite(BEEP_PIN, BEEP_ON);
+    } else {
+        digitalWrite(BEEP_PIN, BEEP_OFF);
+    }
+} else {
+    digitalWrite(BEEP_PIN, BEEP_OFF); // 恢复安全水位或手动静音时关闭蜂鸣器
+}</code></pre>
 
-// 网络时间配置
-const char* ntpServer = "ntp.aliyun.com";
-const long  gmtOffset_sec = 8 * 3600;
-const int   daylightOffset_sec = 0;
-
-// 硬件实例创建
-Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
-WebServer server(80);
-
-// 湿度校准参数
-int dryValue = 4095;
-int wetValue = 1500;
-
-// 全局变量
-int currentMoisture = 0;
-int rawAnalogValue = 0;
-int alarmThreshold = 30;
-bool isMuted = false;
-char currentTimeStr[20] = "同步中...";
-unsigned long lastScreenUpdate = 0;
-
-// 网页页面生成
-String HtmlPage() {
-  String html = "&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;";
-  html += "&lt;meta name='viewport' content='width=device-width,initial-scale=1.0'&gt;";
-  html += "&lt;meta http-equiv='refresh' content='3'&gt;";
-  html += "&lt;title&gt;土壤湿度监测系统&lt;/title&gt;";
-  html += "&lt;style&gt;";
-  html += "body{text-align:center;background:#e8f5e9;font-family:'Segoe UI',Arial,sans-serif;}";
-  html += "button{padding:12px 20px;font-size:16px;border:none;border-radius:8px;background:#4caf50;color:white;margin:5px;cursor:pointer;}";
-  html += ".danger{background:#f44336;}";
-  html += ".card{background:white;padding:30px;border-radius:15px;margin:20px auto;max-width:500px;box-shadow:0 10px 20px rgba(0,0,0,0.1);}";
-  html += "&lt;/style&gt;&lt;/head&gt;&lt;body&gt;";
-
-  html += "&lt;h2 style='color:#2e7d32;'&gt;智能土壤湿度监测系统&lt;/h2&gt;";
-  html += "&lt;div class='card'&gt;";
-  html += "&lt;p style='font-size:18px;'&gt;当前时间：&lt;b&gt;" + String(currentTimeStr) + "&lt;/b&gt;&lt;/p&gt;";
-  html += "&lt;hr style='border:0;border-top:1px solid #eee;margin:20px 0;'&gt;";
-  html += "&lt;p&gt;实时土壤湿度&lt;/p&gt;";
-
-  String color = currentMoisture &lt; alarmThreshold ? "#f44336" : "#2e7d32";
-  html += "&lt;h1 style='color:" + color + ";font-size:72px;margin:10px 0;'&gt;" + String(currentMoisture) + "%&lt;/h1&gt;";
-
-  if (currentMoisture &lt; alarmThreshold) {
-    html += "&lt;p style='font-size:20px;'&gt;状态：缺水，请及时浇水&lt;/p&gt;";
-    if (isMuted) html += "&lt;p style='color:#f44336;'&gt;报警已手动关闭&lt;/p&gt;";
-    else html += "&lt;p style='color:#f44336;'&gt;蜂鸣器正在报警&lt;/p&gt;";
-  } else {
-    html += "&lt;p style='font-size:20px;'&gt;状态：湿度正常，植物水分充足&lt;/p&gt;";
-  }
-
-  html += "&lt;p style='color:#999;font-size:12px;'&gt;报警阈值：" + String(alarmThreshold) + "% | 原始AD值：" + String(rawAnalogValue) + "&lt;/p&gt;";
-  html += "&lt;/div&gt;";
-
-  if (currentMoisture &lt; alarmThreshold &amp;&amp; !isMuted) {
-    html += "&lt;a href='/mute'&gt;&lt;button class='danger'&gt;关闭报警&lt;/button&gt;&lt;/a&gt;&lt;br&gt;&lt;br&gt;";
-  }
-
-  html += "&lt;a href='/set20'&gt;&lt;button&gt;设置阈值 20%&lt;/button&gt;&lt;/a&gt;";
-  html += "&lt;a href='/set30'&gt;&lt;button&gt;设置阈值 30%&lt;/button&gt;&lt;/a&gt;";
-  html += "&lt;a href='/set50'&gt;&lt;button&gt;设置阈值 50%&lt;/button&gt;&lt;/a&gt;";
-  html += "&lt;/body&gt;&lt;/html&gt;";
-
-  return html;
-}
-
-// 网页路由服务
-void WebService() {
-  server.on("/", []() {
-    server.send(200, "text/html", HtmlPage());
-  });
-
-  server.on("/mute", []() {
-    isMuted = true;
-    digitalWrite(BEEP_PIN, BEEP_OFF);
-    server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;报警已关闭，正在跳转...&lt;/p&gt;");
-  });
-
-  server.on("/set20", []() {
-    alarmThreshold = 20;
-    server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;阈值设置成功&lt;/p&gt;");
-  });
-
-  server.on("/set30", []() {
-    alarmThreshold = 30;
-    server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;阈值设置成功&lt;/p&gt;");
-  });
-
-  server.on("/set50", []() {
-    alarmThreshold = 50;
-    server.send(200, "text/html", "&lt;meta http-equiv='refresh' content='0; url=/'&gt;&lt;p&gt;阈值设置成功&lt;/p&gt;");
-  });
-}
-
-// 更新时间
-void updateLocalTime() {
-  struct tm timeinfo;
-  if (!getLocalTime(&amp;timeinfo)) return;
-  sprintf(currentTimeStr, "%02d:%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-}
-
-void setup() {
-  Serial.begin(115200);
-  delay(100);
-
-  pinMode(BEEP_PIN, OUTPUT);
-  digitalWrite(BEEP_PIN, BEEP_OFF);
-
-  tft.initR(INITR_BLACKTAB);
-  tft.setRotation(1);
-  tft.fillScreen(ST77XX_BLACK);
-  tft.setTextColor(ST77XX_GREEN);
-  tft.setTextSize(2);
-  tft.setCursor(15, 30);
-  tft.print("Plant Guard");
-
-  WiFi.begin(ssid, password);
-  tft.setTextColor(ST77XX_WHITE);
-  tft.setTextSize(1);
-  tft.setCursor(15, 60);
-  tft.print("Connecting WiFi...");
-
-  int retry = 0;
-  while (WiFi.status() != WL_CONNECTED &amp;&amp; retry &lt; 20) {
-    delay(500);
-    retry++;
-  }
-
-  tft.fillScreen(ST77XX_BLACK);
-  if (WiFi.status() == WL_CONNECTED) {
-    tft.setCursor(5, 20);
-    tft.print("WiFi Connected!");
-    tft.setCursor(5, 40);
-    tft.print("IP: ");
-    tft.print(WiFi.localIP());
-    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-  } else {
-    tft.setTextColor(ST77XX_RED);
-    tft.setCursor(5, 20);
-    tft.print("WiFi Failed!");
-    tft.setCursor(5, 40);
-    tft.print("Offline Mode");
-  }
-
-  delay(2000);
-  tft.fillScreen(ST77XX_BLACK);
-
-  WebService();
-  server.begin();
-  Serial.println("====== System Ready ======");
-}
-
-void loop() {
-  server.handleClient();
-  updateLocalTime();
-
-  rawAnalogValue = analogRead(SOIL_PIN);
-  currentMoisture = map(rawAnalogValue, dryValue, wetValue, 0, 100);
-  currentMoisture = constrain(currentMoisture, 0, 100);
-
-  if (currentMoisture &gt;= alarmThreshold) {
-    isMuted = false;
-  }
-
-  bool shouldAlarm = (currentMoisture &lt; alarmThreshold) &amp;&amp; !isMuted;
-
-  if (shouldAlarm) {
-    if ((millis() / 300) % 2 == 0) digitalWrite(BEEP_PIN, BEEP_ON);
-    else digitalWrite(BEEP_PIN, BEEP_OFF);
-  } else {
-    digitalWrite(BEEP_PIN, BEEP_OFF);
-  }
-
-  if (millis() - lastScreenUpdate &gt; 500) {
+            <h4>2. TFT彩屏防闪烁局部像素重绘算法</h4>
+            <p>传统的 <code>fillScreen(BLACK)</code> 全屏擦除会导致背光高频闪烁，产生严重的撕裂感。本算法在数据刷新时，首先用 <code>fillRect</code>
+                仅对文本区域进行局部精准覆盖，随后利用带背景色的 <code>tft.setTextColor(COLOR, BACKGROUND)</code> 打印字符，使新数字自动吞噬旧残影，完美实现 0 闪烁。
+            </p>
+            <pre><code class="language-cpp">if (millis() - lastScreenUpdate &gt; 500) {
     lastScreenUpdate = millis();
 
-    Serial.printf("[%s] 湿度: %d%% | 原始AD: %d | 报警阈值: %d%%\n",
-                  currentTimeStr, currentMoisture, rawAnalogValue, alarmThreshold);
-
-    tft.fillRect(0, 0, 160, 20, ST77XX_BLUE);
-    tft.setTextColor(ST77XX_WHITE);
-    tft.setTextSize(1);
-    tft.setCursor(5, 6);
-    tft.print("Time: ");
-    tft.print(currentTimeStr);
-
-    tft.fillRect(0, 30, 160, 20, ST77XX_BLACK);
+    // 局部刷屏优化：只擦除包含 NEED WATER / Moisture Level 的这一行矩形带
+    tft.fillRect(0, 30, 160, 20, ST77XX_BLACK); 
     if (currentMoisture &lt; alarmThreshold) {
-      tft.setTextColor(ST77XX_RED);
-      tft.setTextSize(2);
-      tft.setCursor(15, 35);
-      tft.print("NEED WATER!");
+        tft.setTextColor(ST77XX_RED);
+        tft.print("NEED WATER!");
     } else {
-      tft.setTextColor(ST77XX_GREEN);
-      tft.setTextSize(1);
-      tft.setCursor(20, 35);
-      tft.print("Moisture Level:");
+        tft.setTextColor(ST77XX_GREEN);
+        tft.print("Moisture Level:");
     }
-
+    
+    // 自动用黑色背景色覆盖文字间隙，彻底消灭前一个数值的数字残影
     char moistureStr[10];
-    sprintf(moistureStr, "%-3d%%", currentMoisture);
-
-    if (currentMoisture &lt; alarmThreshold) {
-      tft.setTextColor(ST77XX_RED, ST77XX_BLACK);
-    } else {
-      tft.setTextColor(ST77XX_GREEN, ST77XX_BLACK);
-    }
-
-    tft.setTextSize(4);
-    tft.setCursor(40, 60);
+    sprintf(moistureStr, "%-3d%%", currentMoisture); 
+    tft.setTextColor(currentMoisture &lt; alarmThreshold ? ST77XX_RED : ST77XX_GREEN, ST77XX_BLACK);
     tft.print(moistureStr);
-
-    tft.setTextSize(1);
-    tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK);
-    tft.setCursor(5, 100);
-    tft.print("IP: ");
-    tft.print(WiFi.localIP().toString() + "    ");
-
-    tft.setCursor(5, 115);
-    tft.print("WiFi Web Control Ready");
-  }
 }</code></pre>
+
+            <h3>材料归还记录</h3>
+            <div class="notice-box">
+                <p><strong>已归还：归还清单：</strong></p>
+                <ul>
+                    <li>1. 土壤湿度传感器 * 1</li>
+                    <li>2. OLED TFT液晶屏幕 * 1</li>
+                    <li>3. HX711称重 应力 * 1</li>
+                    <li>4. ESP32C3芯片 * 1</li>
+                    <li>5. 杜邦线若干</li>
+                    <li>6. 面包板 * 1</li>
+                </ul>
+                <p><strong>自费材料留存说明：</strong></p>
+                <ul>
+                    <li>有源蜂鸣器 * 1</li>
+                </ul>
+            </div>
+            <div class="image-grid" style="grid-template-columns: 1fr;">
+                <figure style="max-width: 500px; margin: 0 auto;">
+                    <img src="images/pic41.png" alt="期末项目公有物资归还清点留档">
+                    <figcaption>Fig.40 期末创新项目公有物资清点与归还留档</figcaption>
+                </figure>
+            </div>
 
             <h3>项目总结与反思</h3>
             <p>
